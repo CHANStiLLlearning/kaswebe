@@ -22,6 +22,19 @@ let supabase;
 if (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
   supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   console.log('Supabase client initialized successfully.');
+  
+  // Auto-verify/create the 'images' storage bucket
+  supabase.storage.createBucket('images', { public: true })
+    .then(({ data, error }) => {
+      if (error && error.message !== 'Bucket already exists' && error.error !== 'Duplicate') {
+        console.warn('Could not auto-create Supabase bucket "images":', error.message);
+      } else {
+        console.log('Supabase bucket "images" verified/created successfully.');
+      }
+    })
+    .catch(err => {
+      console.warn('Failed to verify/create Supabase bucket:', err.message);
+    });
 } else {
   console.warn('WARNING: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not defined. File uploads will fallback to local storage.');
 }
