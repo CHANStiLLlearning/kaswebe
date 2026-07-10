@@ -56,7 +56,7 @@ const NewsDetailPage = () => {
   }
 
   // Strip HTML tags for the meta description
-  const plainTextDescription = article.description.replace(/<[^>]+>/g, '').substring(0, 150) + '...';
+  const plainTextDescription = (article.description || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
 
   return (
     <div className="w-full bg-white flex flex-col min-h-screen font-sans">
@@ -95,7 +95,7 @@ const NewsDetailPage = () => {
         {/* Render Rich Text Content */}
         <div 
           className="prose prose-lg max-w-none text-gray-800 leading-relaxed prose-headings:text-[#9A2220] prose-a:text-[#D76918] hover:prose-a:text-[#9A2220]"
-          dangerouslySetInnerHTML={{ __html: article.description }}
+          dangerouslySetInnerHTML={{ __html: article.description || '' }}
         />
       </div>
     </div>

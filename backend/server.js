@@ -155,9 +155,9 @@ app.get('/api/news', async (req, res) => {
 
 app.post('/api/news', async (req, res) => {
   try {
-    const { title, image, date } = req.body;
+    const { title, image, date, description } = req.body;
     const news = await prisma.newsArticle.create({
-      data: { title, image, date }
+      data: { title, image, date, description }
     });
     res.status(201).json(news);
   } catch (error) {
@@ -168,10 +168,10 @@ app.post('/api/news', async (req, res) => {
 app.put('/api/news/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { title, image, date } = req.body;
+    const { title, image, date, description } = req.body;
     const news = await prisma.newsArticle.update({
       where: { id },
-      data: { title, image, date }
+      data: { title, image, date, description }
     });
     res.json(news);
   } catch (error) {

@@ -76,7 +76,7 @@ const NewsPage = () => {
                         {article.title}
                       </h3>
                       <p className="text-gray-600 text-sm mt-2 line-clamp-3">
-                        {article.description.replace(/<[^>]+>/g, '')}
+                        {(article.description || '').replace(/<[^>]+>/g, '')}
                       </p>
                     </div>
                   </Link>
