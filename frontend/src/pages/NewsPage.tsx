@@ -53,7 +53,27 @@ const NewsPage = () => {
               News & Update
             </h2>
 
-            {loading && <p className="text-gray-500">Loading latest news...</p>}
+            {loading && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {[1, 2, 3, 4].map((index) => (
+                  <div key={index} className="bg-[#f9fafb] rounded-2xl overflow-hidden border border-gray-100 flex flex-col animate-pulse">
+                    <div className="relative aspect-[4/3] bg-gray-200"></div>
+                    <div className="p-5 flex flex-col gap-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-gray-200 rounded-full"></div>
+                        <div className="h-4 bg-gray-200 rounded w-24"></div>
+                      </div>
+                      <div className="h-5 bg-gray-200 rounded w-5/6"></div>
+                      <div className="space-y-2 mt-1">
+                        <div className="h-3 bg-gray-200 rounded w-full"></div>
+                        <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                        <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             {error && <p className="text-red-500">Error: {error}</p>}
 
             {!loading && !error && (

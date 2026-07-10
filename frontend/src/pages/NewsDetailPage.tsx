@@ -38,8 +38,27 @@ const NewsDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="w-full min-h-[60vh] flex justify-center items-center">
-        <div className="w-10 h-10 border-4 border-[#9A2220] border-t-transparent rounded-full animate-spin"></div>
+      <div className="w-full bg-white flex flex-col min-h-screen font-sans animate-pulse">
+        {/* Skeleton Hero Section */}
+        <div className="relative w-full h-[35vh] min-h-[300px] bg-gray-200 flex flex-col justify-end pb-12">
+          <div className="relative z-10 max-w-4xl mx-auto px-4 w-full">
+            <div className="w-24 h-5 bg-gray-300 rounded mb-6"></div>
+            <div className="w-20 h-6 bg-gray-300 rounded-full mb-4"></div>
+            <div className="h-10 bg-gray-300 rounded w-3/4"></div>
+          </div>
+        </div>
+
+        {/* Skeleton Main Content Area */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 w-full flex-grow">
+          <div className="w-full rounded-2xl bg-gray-200 h-[350px] mb-12"></div>
+          <div className="space-y-4">
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-4 bg-gray-200 rounded w-11/12"></div>
+            <div className="h-4 bg-gray-200 rounded w-4/5"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          </div>
+        </div>
       </div>
     );
   }

@@ -43,7 +43,26 @@ const NewsSection = () => {
         </div>
         
         {loading ? (
-          <p className="text-center text-gray-500 py-10">Loading latest news...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((index) => (
+              <div key={index} className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm flex flex-col animate-pulse">
+                <div className="relative h-48 bg-gray-200"></div>
+                <div className="p-6 flex flex-col flex-grow gap-3">
+                  <div className="flex items-center text-sm text-gray-500 mb-1">
+                    <div className="w-4 h-4 mr-2 bg-gray-200 rounded-full"></div>
+                    <div className="h-4 bg-gray-200 rounded w-20"></div>
+                  </div>
+                  <div className="h-6 bg-gray-200 rounded w-11/12 mb-1"></div>
+                  <div className="space-y-2 flex-grow">
+                    <div className="h-3.5 bg-gray-200 rounded w-full"></div>
+                    <div className="h-3.5 bg-gray-200 rounded w-5/6"></div>
+                    <div className="h-3.5 bg-gray-200 rounded w-3/4"></div>
+                  </div>
+                  <div className="h-4 bg-gray-200 rounded w-24 mt-4"></div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {newsItems.map((news) => (
