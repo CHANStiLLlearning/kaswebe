@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Calendar } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Calendar, Search } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import HeroBanner from '../components/HeroBanner';
 
@@ -18,16 +18,35 @@ const NewsPage = () => {
   const [recentNews, setRecentNews] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get('search') || '';
 
+  // Fetch recent news once
+  useEffect(() => {
+    const fetchRecentNews = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/news?limit=2`);
+        if (response.ok) {
+          const result = await response.json();
+          setRecentNews(result.data || []);
+        }
+      } catch (err) {
+        console.error('Failed to fetch recent news', err);
+      }
+    };
+    fetchRecentNews();
+  }, []);
+
+  // Fetch news articles when search query changes
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(`${API_BASE_URL}/api/news`);
+        const response = await fetch(`${API_BASE_URL}/api/news?search=${encodeURIComponent(search)}`);
         if (!response.ok) throw new Error('Failed to fetch news');
         const result = await response.json();
         const data = result.data || [];
         setNewsArticles(data);
-        setRecentNews(data.slice(0, 2)); // Just take top 2 for recent
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -36,7 +55,7 @@ const NewsPage = () => {
     };
 
     fetchNews();
-  }, []);
+  }, [search]);
 
   return (
     <div className="w-full bg-white flex flex-col min-h-screen">
@@ -48,9 +67,16 @@ const NewsPage = () => {
           
           {/* Left Column: News & Update */}
           <div className="lg:col-span-8">
-            <h2 className="text-[22px] font-bold text-gray-800 flex items-center gap-3 border-b-2 border-gray-100 pb-3 mb-8">
-              <div className="w-1.5 h-6 bg-[#9A2220] rounded-full shadow-sm"></div>
-              News & Update
+            <h2 className="text-[22px] font-bold text-gray-800 flex items-center justify-between border-b-2 border-gray-100 pb-3 mb-8">
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-6 bg-[#9A2220] rounded-full shadow-sm"></div>
+                <span>{search ? `Search Results for "${search}"` : 'News & Update'}</span>
+              </div>
+              {search && (
+                <Link to="/news" className="text-sm font-semibold text-[#9A2220] hover:underline">
+                  Clear Search
+                </Link>
+              )}
             </h2>
 
             {loading && (
@@ -76,7 +102,18 @@ const NewsPage = () => {
             )}
             {error && <p className="text-red-500">Error: {error}</p>}
 
-            {!loading && !error && (
+            {!loading && !error && newsArticles.length === 0 && (
+              <div className="text-center py-16 bg-[#f9fafb] rounded-2xl border border-gray-100 px-4">
+                <Search className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                <p className="text-lg font-semibold text-gray-700">No articles found</p>
+                <p className="text-sm text-gray-500 mt-1">We couldn't find any news articles matching "{search}".</p>
+                <Link to="/news" className="inline-block mt-4 bg-[#9A2220] hover:bg-[#8A1A18] text-white px-5 py-2 rounded-xl text-sm font-semibold transition-colors">
+                  View All News
+                </Link>
+              </div>
+            )}
+
+            {!loading && !error && newsArticles.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {newsArticles.map((article) => (
                   <Link to={`/news/${article.id}`} key={article.id} className="bg-[#f9fafb] rounded-2xl overflow-hidden hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col group cursor-pointer">

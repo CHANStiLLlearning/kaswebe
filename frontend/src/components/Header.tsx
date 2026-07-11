@@ -1,17 +1,54 @@
 import { useState } from 'react';
-import { Search, Sun, Menu, X } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { Search, Menu, X } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const logo = "/images/logo.png"
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigate(`/news?search=${encodeURIComponent(searchQuery.trim())}`);
+    setIsSearchOpen(false);
+  };
+
   return (
-    <header className="w-full bg-[#BD0B32] text-white shadow-md sticky top-0 z-50">
+    <header className="w-full bg-[#BD0B32] text-white shadow-md sticky top-0 z-50 relative">
+      {/* Mobile Search Overlay */}
+      {isSearchOpen && (
+        <form
+          onSubmit={handleSearchSubmit}
+          className="absolute inset-0 bg-[#BD0B32] px-4 flex items-center justify-between z-50 lg:hidden"
+        >
+          <div className="flex-1 max-w-2xl mx-auto flex items-center gap-2 bg-white text-black px-3 py-2 rounded-lg shadow-inner">
+            <Search className="w-4 h-4 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search news..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 text-black outline-none bg-transparent text-sm sm:text-base"
+              autoFocus
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsSearchOpen(false)}
+            className="p-2 hover:bg-black/10 rounded-full transition-colors ml-2"
+            aria-label="Close search"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+        </form>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
 
@@ -21,94 +58,114 @@ const Header = () => {
             <img src={logo} alt="Sovannaphumi School" className="w-25 h-16" />
             <h1 className="text-xl font-bold">
               <span className="text-white">AMERICA SCHOOL</span>
-            </h1> 
+            </h1>
           </NavLink>
 
           {/* Navigation Desktop */}
           <nav className="hidden lg:flex items-center gap-1">
             <NavLink
               to="/"
-              className={({ isActive }) => `px-4 py-2 rounded-lg text-[15px] font-semibold transition-colors ${isActive ? 'bg-[#8A1A18] text-white' : 'text-white hover:bg-black/10'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
             >
               Home
             </NavLink>
 
             <NavLink
               to="/about"
-              className={({ isActive }) => `px-4 py-2 rounded-lg text-[15px] font-semibold transition-colors ${isActive ? 'bg-[#8A1A18] text-white' : 'text-white hover:bg-black/10'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
             >
               About Us
             </NavLink>
             <NavLink
               to="/admissions"
-              className={({ isActive }) => `px-4 py-2 rounded-lg text-[15px] font-semibold transition-colors ${isActive ? 'bg-[#8A1A18] text-white' : 'text-white hover:bg-black/10'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
             >
               Admissions
             </NavLink>
             <NavLink
               to="/programs"
-              className={({ isActive }) => `px-4 py-2 rounded-lg text-[15px] font-semibold transition-colors ${isActive ? 'bg-[#8A1A18] text-white' : 'text-white hover:bg-black/10'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
             >
               Programs
             </NavLink>
             <NavLink
               to="/news"
-              className={({ isActive }) => `px-4 py-2 rounded-lg text-[15px] font-semibold transition-colors ${isActive ? 'bg-[#8A1A18] text-white' : 'text-white hover:bg-black/10'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
             >
               News
             </NavLink>
 
             <NavLink
               to="/contact"
-              className={({ isActive }) => `px-4 py-2 rounded-lg text-[15px] font-semibold transition-colors ${isActive ? 'bg-[#8A1A18] text-white' : 'text-white hover:bg-black/10'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
             >
               Contact Us
             </NavLink>
             <NavLink
               to="/careers"
-              className={({ isActive }) => `px-4 py-2 rounded-lg text-[15px] font-semibold transition-colors ${isActive ? 'bg-[#8A1A18] text-white' : 'text-white hover:bg-black/10'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
             >
               Careers
             </NavLink>
           </nav>
 
           {/* Action Icons */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button className="p-2 hover:bg-black/10 rounded-full transition-colors hidden sm:block">
-              <Search className="w-[18px] h-[18px] text-white font-bold" strokeWidth={2.5} />
-            </button>
-            <button className="p-2 hover:bg-black/10 rounded-full transition-colors hidden sm:block">
-              <Sun className="w-[20px] h-[20px] text-white" />
-            </button>
-            <button className="ml-1 hover:opacity-80 transition-opacity flex items-center justify-center">
-              {/* British Flag Placeholder */}
-              <div className="w-6 h-6 rounded-full overflow-hidden border-[1.5px] border-white bg-[#012169] relative flex items-center justify-center">
-                <div className="w-full h-[3px] bg-white absolute"></div>
-                <div className="w-[3px] h-full bg-white absolute"></div>
-                <div className="w-full h-[1px] bg-[#C8102E] absolute"></div>
-                <div className="w-[1px] h-full bg-[#C8102E] absolute"></div>
-                {/* Diagonals */}
-                <div className="w-[120%] h-[2px] bg-white absolute transform rotate-45"></div>
-                <div className="w-[120%] h-[2px] bg-white absolute transform -rotate-45"></div>
-                <div className="w-[120%] h-[1px] bg-[#C8102E] absolute transform rotate-45"></div>
-                <div className="w-[120%] h-[1px] bg-[#C8102E] absolute transform -rotate-45"></div>
-              </div>
+          <div className="flex items-center gap-2">
+            {/* Desktop Search Bar (visible on lg and up) */}
+            <form onSubmit={handleSearchSubmit} className="hidden lg:flex items-center gap-2 bg-white text-black px-3 py-1.5 rounded-lg shadow-inner">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="text-black outline-none bg-transparent w-36 focus:w-48 transition-all duration-300 text-sm"
+              />
+              <button type="submit" className="text-gray-500 hover:text-[#BD0B32] transition-colors" aria-label="Submit search">
+                <Search className="w-4 h-4" />
+              </button>
+            </form>
+
+            {/* Mobile Search Button (visible under lg) */}
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(true)}
+              className="lg:hidden p-2 hover:bg-black/10 rounded-full transition-colors"
+              aria-label="Open search overlay"
+            >
+              <Search className="w-5 h-5 text-white" />
             </button>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle (visible under lg) */}
             <button
               onClick={toggleMobileMenu}
-              className="p-2 hover:bg-black/10 rounded-full transition-colors lg:hidden ml-1"
+              className="lg:hidden p-2 hover:bg-black/10 rounded-full transition-colors ml-1"
+              aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
             </button>
           </div>
+
         </div>
       </div>
 
       {/* Mobile Navigation Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="lg:hidden absolute top-20 left-0 w-full bg-white shadow-xl border-t border-gray-200 py-4 flex flex-col z-50">
+          {/* Mobile Search inside Drawer */}
+          <form onSubmit={handleSearchSubmit} className="px-6 py-2 mb-2">
+            <div className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-lg">
+              <Search className="w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search news..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent outline-none flex-grow text-sm text-gray-800"
+              />
+              <button type="submit" className="hidden" />
+            </div>
+          </form>
+
           <NavLink
             to="/"
             onClick={toggleMobileMenu}
@@ -160,18 +217,6 @@ const Header = () => {
           >
             Careers
           </NavLink>
-
-          {/* Mobile Action Icons */}
-          <div className="px-6 py-4 flex items-center gap-4 border-t border-gray-100 mt-2 sm:hidden">
-            <button className="flex items-center gap-2 text-gray-700 font-semibold bg-gray-100 px-4 py-2 rounded-lg">
-              <Search className="w-4 h-4" />
-              <span>Search</span>
-            </button>
-            <button className="flex items-center gap-2 text-gray-700 font-semibold bg-gray-100 px-4 py-2 rounded-lg">
-              <Sun className="w-4 h-4" />
-              <span>Theme</span>
-            </button>
-          </div>
         </div>
       )}
     </header>
