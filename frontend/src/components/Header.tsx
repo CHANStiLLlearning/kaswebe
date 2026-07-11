@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Search, Sun, Menu, X } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import logo from "../assets/logo.png"
+
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -16,7 +18,7 @@ const Header = () => {
           {/* Logo Section */}
           <NavLink to="/" className="flex items-center gap-3 cursor-pointer">
             {/* Logo Emblem Placeholder */}
-            <img src="https://www.sovannaphumi.edu.kh/sps/logo.png" alt="Sovannaphumi School" className="w-25 h-16" />
+            <img src={logo} alt="Sovannaphumi School" className="w-25 h-16" />
           </NavLink>
 
           {/* Navigation Desktop */}
