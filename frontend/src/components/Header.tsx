@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search, Sun, Menu, X } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
-import logo from "../assets/logo.png"
+import logo from "../assets/images/logo.png"
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
