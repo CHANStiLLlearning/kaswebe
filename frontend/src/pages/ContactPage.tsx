@@ -12,12 +12,12 @@ const ContactPage = () => {
     {
       icon: <Mail className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
       title: "Mail",
-      content: "info@sovannaphumi.edu.kh",
+      content: "info@khmeramericaschool.edu.kh",
     },
     {
       icon: <FaTelegramPlane className="w-7 h-7 text-[#A02828]" />,
       title: "Telegram",
-      content: "t.me/sovannaphumischoolcambodia",
+      content: "t.me/khmeramericaschoolcambodia",
     },
     {
       icon: <MapPin className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
@@ -27,22 +27,22 @@ const ContactPage = () => {
     {
       icon: <FaLinkedin className="w-7 h-7 text-[#A02828]" />,
       title: "Linkln",
-      content: "@sovannaphumischoolcambodia",
+      content: "@khmeramericaschoolcambodia",
     },
     {
       icon: <FaFacebook className="w-7 h-7 text-[#A02828]" />,
       title: "Facebook",
-      content: "Sovannaphumi School, Cambodia",
+      content: "Khmer America School, Cambodia",
     },
     {
       icon: <FaInstagram className="w-7 h-7 text-[#A02828]" />,
       title: "Instagram",
-      content: "@sovannaphumi",
+      content: "@khmeramericaschool",
     },
     {
       icon: <FaTiktok className="w-7 h-7 text-[#A02828]" />,
       title: "Toktok",
-      content: "@sovannaphumi",
+      content: "@khmeramericaschool",
     }
   ];
 
@@ -55,7 +55,7 @@ const ContactPage = () => {
         <div className="relative z-10 text-center px-4">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 drop-shadow-md">Contact Us</h1>
           <p className="text-lg md:text-xl opacity-90 font-medium">
-            Get in touch with Sovannaphumi School
+            Get in touch with Khmer America School
           </p>
         </div>
       </div>
@@ -150,7 +150,7 @@ const ContactPage = () => {
             allowFullScreen={true} 
             loading="lazy" 
             referrerPolicy="no-referrer-when-downgrade"
-            title="Sovannaphumi School Locations"
+            title="Khmer America School Locations"
             className="absolute inset-0 w-full h-full object-cover"
           ></iframe>
         </div>

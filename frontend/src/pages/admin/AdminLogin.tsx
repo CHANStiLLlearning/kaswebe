@@ -47,7 +47,7 @@ const AdminLogin = () => {
           Admin Dashboard
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Sign in to manage Sovannaphumi School content
+          Sign in to manage Khmer America School content
         </p>
       </div>
 

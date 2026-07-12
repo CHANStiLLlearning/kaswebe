@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../config';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#9A2220] text-white pt-16 pb-8 relative overflow-hidden">
+    <footer className="bg-[#002768] text-white pt-16 pb-8 relative overflow-hidden">
       {/* Decorative dot pattern background */}
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
       
@@ -14,7 +14,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-6 pb-2 border-b border-white/20 inline-block">CONTACT US</h3>
             <ul className="space-y-3 mb-8">
-              <li><a href="#" className="hover:text-[#EBA525] transition-colors">Contact Sovannaphumi school</a></li>
+              <li><a href="#" className="hover:text-[#EBA525] transition-colors">Contact to America School</a></li>
               <li><a href="#" className="hover:text-[#EBA525] transition-colors">Location & Maps</a></li>
               <li><a href="#" className="hover:text-[#EBA525] transition-colors">Careers</a></li>
               <li><a href="#" className="hover:text-[#EBA525] transition-colors">E-Class</a></li>
@@ -115,7 +115,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-white/20 pt-8 text-center text-sm text-white/70">
-          <p>©2026 Sovannaphumi School (SPS). All Rights Reserved. Designed with passion.</p>
+          <p>©2026 America School (AS). All Rights Reserved. Designed with passion.</p>
         </div>
       </div>
     </footer>

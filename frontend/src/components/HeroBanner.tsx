@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slideImages = [
-  "/images/1.jpeg",
-  "/images/2.jpeg",
-  "/images/3.jpg",
-  "/images/4.jpeg"
+  "/images/a.png",
+  "/images/b.png",
+  "/images/c.png",
+  "/images/d.png"
 ];
 
 const HeroBanner = () => {
@@ -39,18 +39,18 @@ const HeroBanner = () => {
       </button>
 
       {/* Sliding Viewport */}
-      <div className="w-full">
+      <div className="w-full h-[75vh]">
         <div 
           className="flex transition-transform duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)]"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
           {/* Generate Slides */}
           {slideImages.map((image, idx) => (
-            <div key={idx} className="w-full flex-shrink-0 relative">
+            <div key={idx} className="w-full flex-shrink-0 relative h-[80vh]">
                <img 
                  src={image} 
                  alt={`Slide ${idx + 1}`} 
-                 className="w-full h-auto object-contain object-center block" 
+                 className="w-full  object-cover object-center block h-[80vh]" 
                />
                {/* Subtle dark overlay for better contrast on arrows/dots */}
                <div className="absolute inset-0 bg-black/10 z-10 pointer-events-none"></div>

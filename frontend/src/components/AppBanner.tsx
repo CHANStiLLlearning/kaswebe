@@ -12,10 +12,10 @@ const AppBanner = () => {
           
           <div className="w-full md:w-1/2 text-white text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-              Stay Connected With The SPS Mobile App
+              Stay Connected With The KAS Mobile App
             </h2>
             <p className="text-white/90 text-lg mb-8 max-w-xl">
-              Track your child's progress, receive important announcements, and stay in touch with teachers directly from your smartphone. Download the Sovannaphumi School app today!
+              Track your child's progress, receive important announcements, and stay in touch with teachers directly from your smartphone. Download the Khmer America School app today!
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
               <a href="#" className="hover:scale-105 transition-transform">

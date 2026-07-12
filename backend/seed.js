@@ -22,7 +22,7 @@ async function main() {
     await prisma.newsArticle.createMany({
       data: [
         {
-          title: "Welcome to Sovannaphum School's New Digital Portal",
+          title: "Welcome to Khmer America School's New Digital Portal",
           image: "https://picsum.photos/id/1018/800/450",
           date: "10 July 2026",
           description: "We are thrilled to introduce our new school website and admin management system. Parents and students can now track announcements, news, and school activities directly through our portal."

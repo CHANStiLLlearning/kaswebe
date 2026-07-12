@@ -11,7 +11,7 @@ const OurTeachers = () => {
               Khmer General Education (KGE) Teachers
             </h3>
             <p className="text-gray-700 mb-4">
-              At Sovannaphumi School, all our KGE teachers are highly qualified and carefully selected to ensure the best educational outcomes for our students.
+              At Khmer America School, all our KGE teachers are highly qualified and carefully selected to ensure the best educational outcomes for our students.
             </p>
             <ul className="list-disc pl-6 space-y-2 text-gray-600">
               <li>Must hold at least a Bachelor's Degree in Education or a related field.</li>

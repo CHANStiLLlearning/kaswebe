@@ -80,7 +80,7 @@ const NewsDetailPage = () => {
   return (
     <div className="w-full bg-white flex flex-col min-h-screen font-sans">
       <Helmet>
-        <title>{article.title} | Sovannaphumi School News</title>
+        <title>{article.title} | Khmer America School News</title>
         <meta name="description" content={plainTextDescription} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={plainTextDescription} />

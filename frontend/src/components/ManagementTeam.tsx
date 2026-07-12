@@ -23,10 +23,10 @@ const ManagementTeam = () => {
           </div>
           
           <div className="w-full md:w-2/3">
-            <h4 className="text-2xl font-bold text-[#9A2220] mb-4">Welcome to Sovannaphumi School</h4>
+            <h4 className="text-2xl font-bold text-[#9A2220] mb-4">Welcome to Khmer America School</h4>
             <div className="prose prose-lg text-gray-600">
               <p className="mb-4">
-                Education is the most powerful weapon which you can use to change the world. At Sovannaphumi School, we are committed to providing the highest quality education to build the future leaders of Cambodia.
+                Education is the most powerful weapon which you can use to change the world. At Khmer America School, we are committed to providing the highest quality education to build the future leaders of Cambodia.
               </p>
               <p className="mb-4">
                 Since our founding, we have continuously strived for excellence, expanding our reach and improving our curriculum to meet international standards while preserving our rich Khmer culture and heritage.

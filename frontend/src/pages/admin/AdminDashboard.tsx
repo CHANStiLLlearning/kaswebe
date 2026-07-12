@@ -102,7 +102,7 @@ const AdminDashboard = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
-          <p className="text-gray-500">Welcome to the Sovannaphumi School Admin Panel.</p>
+          <p className="text-gray-500">Welcome to the Khmer America School Admin Panel.</p>
         </div>
         
         <div className="flex items-center gap-4 bg-white p-3 rounded-xl shadow-sm border border-gray-100">

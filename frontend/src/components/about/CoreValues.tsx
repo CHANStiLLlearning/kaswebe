@@ -35,7 +35,7 @@ const CoreValues = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-[#9A2220] mb-4">Our Core Values</h2>
           <div className="w-24 h-1 bg-[#EBA525] mx-auto rounded-full"></div>
           <p className="mt-6 text-gray-600 max-w-2xl mx-auto text-lg">
-            These four pillars guide our daily actions, decisions, and the way we interact with one another at Sovannaphumi School.
+            These four pillars guide our daily actions, decisions, and the way we interact with one another at Khmer America School.
           </p>
         </div>
 

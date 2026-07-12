@@ -20,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-[#BD0B32] text-white shadow-md sticky top-0 z-50 relative">
+    <header className="w-full bg-white text-black shadow-md sticky top-0 z-50 relative">
       {/* Mobile Search Overlay */}
       {isSearchOpen && (
         <form
@@ -55,9 +55,9 @@ const Header = () => {
           {/* Logo Section */}
           <NavLink to="/" className="flex items-center gap-3 cursor-pointer">
             {/* Logo Emblem Placeholder */}
-            <img src={logo} alt="Sovannaphumi School" className="w-25 h-16" />
+            <img src={logo} alt="Khmer America School" className="w-25 h-16" />
             <h1 className="text-xl font-bold">
-              <span className="text-white">AMERICA SCHOOL</span>
+              <span className="">AMERICA SCHOOL</span>
             </h1>
           </NavLink>
 
@@ -65,45 +65,45 @@ const Header = () => {
           <nav className="hidden lg:flex items-center gap-1">
             <NavLink
               to="/"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
             >
               Home
             </NavLink>
 
             <NavLink
               to="/about"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
             >
               About Us
             </NavLink>
             <NavLink
               to="/admissions"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
             >
               Admissions
             </NavLink>
             <NavLink
               to="/programs"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
             >
               Programs
             </NavLink>
             <NavLink
               to="/news"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
             >
               News
             </NavLink>
 
             <NavLink
               to="/contact"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
             >
               Contact Us
             </NavLink>
             <NavLink
               to="/careers"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-white' : 'border-transparent text-white/90 hover:text-white hover:border-white/30'}`}
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
             >
               Careers
             </NavLink>
@@ -112,7 +112,7 @@ const Header = () => {
           {/* Action Icons */}
           <div className="flex items-center gap-2">
             {/* Desktop Search Bar (visible on lg and up) */}
-            <form onSubmit={handleSearchSubmit} className="hidden lg:flex items-center gap-2 bg-white text-black px-3 py-1.5 rounded-lg shadow-inner">
+            <form onSubmit={handleSearchSubmit} className="hidden lg:flex items-center gap-2 text-black px-3 py-1.5 rounded-lg shadow-inner">
               <input
                 type="text"
                 placeholder="Search..."
@@ -132,7 +132,7 @@ const Header = () => {
               className="lg:hidden p-2 hover:bg-black/10 rounded-full transition-colors"
               aria-label="Open search overlay"
             >
-              <Search className="w-5 h-5 text-white" />
+              <Search className="w-5 h-5 text-black" />
             </button>
 
             {/* Mobile Menu Toggle (visible under lg) */}
@@ -141,7 +141,7 @@ const Header = () => {
               className="lg:hidden p-2 hover:bg-black/10 rounded-full transition-colors ml-1"
               aria-label="Toggle mobile menu"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+              {isMobileMenuOpen ? <X className="w-6 h-6 text-black" /> : <Menu className="w-6 h-6 text-black" />}
             </button>
           </div>
 

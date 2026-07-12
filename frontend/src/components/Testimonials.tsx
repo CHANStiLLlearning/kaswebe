@@ -6,7 +6,7 @@ const testimonials = [
     name: 'Sok Dara',
     role: 'Alumni, Class of 2024',
     image: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=200',
-    quote: 'Sovannaphumi School provided me with the best foundation for my university studies. The teachers are incredibly supportive and the environment is highly encouraging for students to grow.',
+    quote: 'Khmer America School provided me with the best foundation for my university studies. The teachers are incredibly supportive and the environment is highly encouraging for students to grow.',
   },
   {
     name: 'Chea Sreyneath',
