@@ -13,12 +13,12 @@ const ManagementTeam = () => {
           <div className="w-full md:w-1/3 flex flex-col items-center">
             <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-[#9A2220] mb-6 shadow-xl">
               <img 
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400" 
+                src="https://portfolio-web-eosin-alpha.vercel.app/assets/keokimchan-CZlzWr5F.png" 
                 alt="CEO" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 text-center">Mr. Somonea Khim</h3>
+            <h3 className="text-2xl font-bold text-gray-800 text-center">Mr. CHAN</h3>
             <p className="text-[#D76918] font-semibold text-center">Chief Executive Officer</p>
           </div>
           
