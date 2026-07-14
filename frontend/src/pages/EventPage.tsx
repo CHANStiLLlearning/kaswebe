@@ -206,7 +206,7 @@ const EventPage = () => {
                         </div>
                       </div>
 
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#9A2220] transition-colors leading-tight">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#9A2220] transition-colors leading-snug">
                         {event.title}
                       </h3>
 
