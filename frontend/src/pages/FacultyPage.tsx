@@ -91,11 +91,11 @@ const FacultyPage = () => {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="bg-gray-50 border border-gray-200 text-gray-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#9A2220]/20 focus:border-[#9A2220] font-semibold text-sm cursor-pointer"
+              className="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#9A2220]/20 focus:border-[#9A2220] font-semibold text-sm cursor-pointer"
             >
               {subjects.map(s => (
                 <option key={s} value={s}>{s === 'all' ? 'All Subjects' : s}</option>
@@ -105,7 +105,7 @@ const FacultyPage = () => {
             <select
               value={selectedNationality}
               onChange={(e) => setSelectedNationality(e.target.value)}
-              className="bg-gray-50 border border-gray-200 text-gray-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#9A2220]/20 focus:border-[#9A2220] font-semibold text-sm cursor-pointer"
+              className="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#9A2220]/20 focus:border-[#9A2220] font-semibold text-sm cursor-pointer"
             >
               {nationalities.map(n => (
                 <option key={n} value={n}>{n === 'all' ? 'All Nationalities' : n}</option>
