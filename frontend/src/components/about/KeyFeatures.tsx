@@ -1,8 +1,8 @@
-import classroomIcon from '../../assets/icons/Classroom management.svg';
-import examIcon from '../../assets/icons/Exam.svg';
-import paymentIcon from '../../assets/icons/Payment.svg';
-import settingIcon from '../../assets/icons/Setting.svg';
-import studentRegiIcon from '../../assets/icons/Student Regi.svg';
+import classroomIcon from '../../assets/icons/classroom-management.svg';
+import examIcon from '../../assets/icons/exam.svg';
+import paymentIcon from '../../assets/icons/payment.svg';
+import settingIcon from '../../assets/icons/setting.svg';
+import studentRegiIcon from '../../assets/icons/student-regi.svg';
 
 const features = [
   {
