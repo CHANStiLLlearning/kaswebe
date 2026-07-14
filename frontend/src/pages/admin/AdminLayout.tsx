@@ -54,7 +54,7 @@ const AdminLayout = () => {
           <button 
             onClick={() => {
               logout();
-              navigate('/admin/login');
+              navigate('/kas-portal-entry');
             }} 
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-300 hover:bg-red-500/20 hover:text-red-100 transition-all duration-200 font-medium w-full text-left"
           >

@@ -54,7 +54,7 @@ function App() {
           <ScrollToTop />
           <Routes>
             {/* Admin Login Route */}
-            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/kas-portal-entry" element={<AdminLogin />} />
 
             {/* Admin Routes (Protected) */}
             <Route path="/admin" element={<ProtectedRoute />}>

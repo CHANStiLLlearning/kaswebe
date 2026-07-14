@@ -5,7 +5,7 @@ const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
   
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/kas-portal-entry" replace />;
   }
   
   return <Outlet />;
