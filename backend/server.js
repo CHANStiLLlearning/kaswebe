@@ -8,6 +8,18 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
+
+// Configure Email Transporter (Support Gmail App Passwords, Mailtrap, AWS SES, etc.)
+const mailTransporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.SMTP_PORT) || 465,
+  secure: process.env.SMTP_SECURE !== 'false', // True for 465, false for 587
+  auth: {
+    user: process.env.SMTP_USER, // Your email address
+    pass: process.env.SMTP_PASS, // Your App Password / SMTP secret key
+  },
+});
 
 const app = express();
 const prisma = new PrismaClient();
@@ -405,13 +417,36 @@ app.post('/api/subscribe/broadcast', async (req, res) => {
 
   try {
     const subscribers = await prisma.subscriber.findMany();
-    // In a real application, you would integrate with SendGrid, Mailchimp, or AWS SES here
-    // and send the email asynchronously.
-    console.log(`[MOCK BROADCAST] Sending email to ${subscribers.length} subscribers.`);
-    console.log(`[Subject]: ${subject}`);
-    
-    res.json({ message: `Newsletter broadcasted successfully to ${subscribers.length} subscribers!` });
+    if (subscribers.length === 0) {
+      return res.json({ message: "No subscribers found to broadcast to." });
+    }
+
+    const emailList = subscribers.map(s => s.email);
+
+    // If SMTP credentials are set, send real emails
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+      const mailOptions = {
+        from: `"Khmer America School" <${process.env.SMTP_USER}>`,
+        to: process.env.SMTP_USER, // Send to self
+        bcc: emailList,            // BCC all subscribers securely
+        subject: subject,
+        html: body,                // Render rich text/HTML body
+      };
+
+      await mailTransporter.sendMail(mailOptions);
+      console.log(`[SMTP BROADCAST] Sent to ${subscribers.length} subscribers.`);
+      res.json({ message: `Newsletter broadcasted successfully to ${subscribers.length} subscribers!` });
+    } else {
+      // Fallback if SMTP not configured yet
+      console.warn('[SMTP BROADCAST WARNING] SMTP_USER or SMTP_PASS environment variables are not set. Using MOCK fallback.');
+      console.log(`[MOCK BROADCAST] Sending email to ${subscribers.length} subscribers.`);
+      console.log(`[Subject]: ${subject}`);
+      res.json({ 
+        message: `[MOCK MODE] Newsletter broadcasted successfully to ${subscribers.length} subscribers! Configure SMTP in Render Settings to send real emails.` 
+      });
+    }
   } catch (error) {
+    console.error('Failed to send broadcast:', error);
     res.status(500).json({ error: "Failed to broadcast newsletter" });
   }
 });
