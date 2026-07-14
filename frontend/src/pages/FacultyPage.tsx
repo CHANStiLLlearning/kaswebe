@@ -23,7 +23,7 @@ const FacultyPage = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`${API_BASE_URL}/api/teachers?limit=100&search=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`${API_BASE_URL}/api/teachers?limit=100`);
       if (!response.ok) throw new Error('Failed to fetch teachers');
       const result = await response.json();
       setTeachers(result.data || []);
@@ -36,15 +36,18 @@ const FacultyPage = () => {
 
   useEffect(() => {
     fetchTeachers();
-  }, [searchQuery]);
+  }, []);
 
   const subjects = ['all', ...Array.from(new Set(teachers.map(t => t.subject).filter(Boolean)))];
   const nationalities = ['all', ...Array.from(new Set(teachers.map(t => t.nationality).filter(Boolean)))];
 
   const filtered = teachers.filter(t => {
+    const nameMatch = t.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                      t.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      t.subject.toLowerCase().includes(searchQuery.toLowerCase());
     const subjectMatch = selectedSubject === 'all' || t.subject === selectedSubject;
     const nationalityMatch = selectedNationality === 'all' || t.nationality === selectedNationality;
-    return subjectMatch && nationalityMatch;
+    return nameMatch && subjectMatch && nationalityMatch;
   });
 
   return (
