@@ -67,7 +67,7 @@ const NewsSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {newsItems.map((news) => (
               <div key={news.id} className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
-                <div className="relative h-48 overflow-hidden bg-gray-100">
+                <div className="relative h-96 overflow-hidden bg-gray-100">
                   <img 
                     src={news.image} 
                     alt={news.title} 
