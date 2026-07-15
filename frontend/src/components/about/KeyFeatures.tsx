@@ -39,7 +39,7 @@ const features = [
 
 const KeyFeatures = () => {
   return (
-    <section className="py-20 bg-white">
+    <section id="key-features" className="py-20 bg-white scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Title */}

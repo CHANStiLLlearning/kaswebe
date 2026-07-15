@@ -29,7 +29,7 @@ const coreValues = [
 
 const CoreValues = () => {
   return (
-    <section className="py-16 bg-gray-50 border-t border-gray-100">
+    <section id="core-values" className="py-16 bg-gray-50 border-t border-gray-100 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[#9A2220] mb-4">Our Core Values</h2>

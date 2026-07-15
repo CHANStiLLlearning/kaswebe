@@ -1,6 +1,5 @@
 import MissionVision from '../components/about/MissionVision';
 import KeyFeatures from '../components/about/KeyFeatures';
-import CoreValues from '../components/about/CoreValues';
 
 const AboutPage = () => {
   return (
@@ -27,7 +26,6 @@ const AboutPage = () => {
       {/* Main Content Sections */}
       <MissionVision />
       <KeyFeatures />
-      <CoreValues />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
+import CoreValuesPage from './pages/CoreValuesPage'
 import AdmissionsLayout from './pages/admissions/AdmissionsLayout'
 import AdmissionsIndex from './pages/admissions/AdmissionsIndex'
 import AdmissionProcess from './pages/admissions/AdmissionProcess'
@@ -74,6 +75,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
+                  <Route path="/about/core-values" element={<CoreValuesPage />} />
                   <Route path="/admissions" element={<AdmissionsLayout />}>
                     <Route index element={<AdmissionsIndex />} />
                     <Route path="process" element={<AdmissionProcess />} />
