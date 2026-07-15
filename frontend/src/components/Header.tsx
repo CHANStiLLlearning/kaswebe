@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, ChevronDown } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -70,18 +70,25 @@ const Header = () => {
               Home
             </NavLink>
 
-            <NavLink
-              to="/about"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
-            >
-              About Us
-            </NavLink>
-            <NavLink
-              to="/about/core-values"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
-            >
-              Core Values
-            </NavLink>
+            <div className="relative group flex items-center py-2">
+              <NavLink
+                to="/about"
+                className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 flex items-center gap-1 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
+              >
+                About Us
+                <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180 opacity-70" />
+              </NavLink>
+              
+              {/* Dropdown Menu */}
+              <div className="absolute left-1/2 -translate-x-1/2 top-full w-52 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
+                <NavLink
+                  to="/about/core-values"
+                  className="block px-4 py-2.5 text-sm text-gray-700 hover:text-[#9A2220] hover:bg-gray-50 transition-colors font-medium border-l-4 border-transparent hover:border-[#9A2220]"
+                >
+                  Core Values
+                </NavLink>
+              </div>
+            </div>
             <NavLink
               to="/programs"
               className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-white text-black' : 'border-transparent text-black/90 hover:text-black hover:border-black/30'}`}
@@ -191,9 +198,9 @@ const Header = () => {
           <NavLink
             to="/about/core-values"
             onClick={toggleMobileMenu}
-            className={({ isActive }) => `px-6 py-3 font-semibold border-b border-gray-100 ${isActive ? 'text-[#A32924] bg-red-50 border-l-4 border-[#A32924]' : 'text-gray-700 hover:bg-gray-50'}`}
+            className={({ isActive }) => `pl-12 pr-6 py-2.5 text-[15px] font-semibold border-b border-gray-100 flex items-center gap-1.5 ${isActive ? 'text-[#A32924] bg-red-50/30' : 'text-gray-500 hover:text-black hover:bg-gray-50/50'} transition-colors`}
           >
-            Core Values
+            <span className="text-gray-300 font-normal">└</span> Core Values
           </NavLink>
           <NavLink
             to="/programs"
