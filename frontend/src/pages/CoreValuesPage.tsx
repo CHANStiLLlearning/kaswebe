@@ -108,27 +108,6 @@ const CoreValuesPage = () => {
             ))}
           </div>
 
-          {/* Bottom call to action */}
-          <div className="mt-20 text-center bg-[#9A2220] rounded-3xl p-8 md:p-12 max-w-4xl mx-auto text-white shadow-xl">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">Want to experience our culture?</h3>
-            <p className="text-white/80 max-w-xl mx-auto mb-6 text-sm md:text-base">
-              Explore our academic offerings, meet our world-class teachers, or schedule a campus visit today.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a 
-                href="/programs" 
-                className="px-6 py-3 bg-[#EBA525] hover:bg-[#d8941b] text-white font-semibold rounded-xl transition-all shadow-md"
-              >
-                Explore Programs
-              </a>
-              <a 
-                href="/contact" 
-                className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold rounded-xl transition-all"
-              >
-                Contact Admissions
-              </a>
-            </div>
-          </div>
         </div>
       </section>
     </div>

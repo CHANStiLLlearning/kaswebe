@@ -74,7 +74,7 @@ const EventsSection = () => {
                 key={event.id} 
                 className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group"
               >
-                <div className="relative h-48 bg-gray-105 overflow-hidden">
+                <div className="relative h-80 bg-gray-105 overflow-hidden">
                   <img 
                     src={event.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800'} 
                     alt={event.title}

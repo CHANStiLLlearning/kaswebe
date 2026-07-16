@@ -303,8 +303,36 @@ const AdminFaculty = () => {
 
       {/* Table */}
       {loading ? (
-        <div className="flex justify-center py-20">
-          <div className="w-8 h-8 border-4 border-[#9A2220] border-t-transparent rounded-full animate-spin" />
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden font-sans animate-pulse">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[650px]">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-100">
+                  <th className="p-5 w-24"><div className="h-4 bg-gray-200 rounded w-10"></div></th>
+                  <th className="p-5"><div className="h-4 bg-gray-200 rounded w-24"></div></th>
+                  <th className="p-5"><div className="h-4 bg-gray-200 rounded w-20"></div></th>
+                  <th className="p-5"><div className="h-4 bg-gray-200 rounded w-24"></div></th>
+                  <th className="p-5"><div className="h-4 bg-gray-200 rounded w-24"></div></th>
+                  <th className="p-5"><div className="h-4 bg-gray-200 rounded w-16 ml-auto"></div></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50 text-sm">
+                {[1, 2, 3, 4, 5].map(n => (
+                  <tr key={n}>
+                    <td className="p-5"><div className="h-5 bg-gray-200 rounded-full w-12"></div></td>
+                    <td className="p-5"><div className="h-5 bg-gray-200 rounded w-32"></div></td>
+                    <td className="p-5"><div className="h-4 bg-gray-200 rounded w-24"></div></td>
+                    <td className="p-5"><div className="h-4 bg-gray-200 rounded w-28"></div></td>
+                    <td className="p-5"><div className="h-4 bg-gray-200 rounded w-24"></div></td>
+                    <td className="p-5 flex justify-end gap-2">
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg"></div>
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg"></div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden font-sans">
