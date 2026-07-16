@@ -1,48 +1,89 @@
+import { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import { FaTelegramPlane, FaTiktok, FaInstagram, FaFacebook, FaLinkedin } from 'react-icons/fa';
 import { API_BASE_URL } from '../config';
 
 const ContactPage = () => {
+  const [settings, setSettings] = useState({
+    contact_hero_title: 'Contact Us',
+    contact_hero_subtitle: 'Get in touch with Khmer America School',
+    contact_phone: '(+855) 15 838 015',
+    contact_email: 'info@khmeramericaschool.edu.kh',
+    contact_telegram: 't.me/khmeramericaschoolcambodia',
+    contact_address: 'St. 60CVV Dermkor Village, Sangkat Chrouy changvar, Khan Chrouy Changvar, Phnom Penh.',
+    contact_linkedin: '@khmeramericaschoolcambodia',
+    contact_facebook: 'Khmer America School, Cambodia',
+    contact_instagram: '@khmeramericaschool',
+    contact_tiktok: '@khmeramericaschool',
+    contact_map_iframe: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15635.882414777322!2d104.915725!3d11.5594002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513e9a5a3a71%3A0x6e0988ccafcb89af!2sSovannaphumi%20School!5e0!3m2!1sen!2skh!4v1700000000000!5m2!1sen!2skh',
+  });
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/settings`)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch settings');
+        return res.json();
+      })
+      .then(data => {
+        setSettings({
+          contact_hero_title: data.contact_hero_title || settings.contact_hero_title,
+          contact_hero_subtitle: data.contact_hero_subtitle || settings.contact_hero_subtitle,
+          contact_phone: data.contact_phone || settings.contact_phone,
+          contact_email: data.contact_email || settings.contact_email,
+          contact_telegram: data.contact_telegram || settings.contact_telegram,
+          contact_address: data.contact_address || settings.contact_address,
+          contact_linkedin: data.contact_linkedin || settings.contact_linkedin,
+          contact_facebook: data.contact_facebook || settings.contact_facebook,
+          contact_instagram: data.contact_instagram || settings.contact_instagram,
+          contact_tiktok: data.contact_tiktok || settings.contact_tiktok,
+          contact_map_iframe: data.contact_map_iframe || settings.contact_map_iframe,
+        });
+      })
+      .catch(err => {
+        console.warn('Fallback to local Contact page settings:', err);
+      });
+  }, []);
+
   const contactItems = [
     {
       icon: <Phone className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
       title: "Phone",
-      content: "(+855) 15 838 015",
+      content: settings.contact_phone,
     },
     {
       icon: <Mail className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
       title: "Mail",
-      content: "info@khmeramericaschool.edu.kh",
+      content: settings.contact_email,
     },
     {
       icon: <FaTelegramPlane className="w-7 h-7 text-[#A02828]" />,
       title: "Telegram",
-      content: "t.me/khmeramericaschoolcambodia",
+      content: settings.contact_telegram,
     },
     {
       icon: <MapPin className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
       title: "Location",
-      content: "St. 60CVV Dermkor Village, Sangkat Chrouy changvar, Khan Chrouy Changvar, Phnom Penh.",
+      content: settings.contact_address,
     },
     {
       icon: <FaLinkedin className="w-7 h-7 text-[#A02828]" />,
       title: "Linkln",
-      content: "@khmeramericaschoolcambodia",
+      content: settings.contact_linkedin,
     },
     {
       icon: <FaFacebook className="w-7 h-7 text-[#A02828]" />,
       title: "Facebook",
-      content: "Khmer America School, Cambodia",
+      content: settings.contact_facebook,
     },
     {
       icon: <FaInstagram className="w-7 h-7 text-[#A02828]" />,
       title: "Instagram",
-      content: "@khmeramericaschool",
+      content: settings.contact_instagram,
     },
     {
       icon: <FaTiktok className="w-7 h-7 text-[#A02828]" />,
       title: "Toktok",
-      content: "@khmeramericaschool",
+      content: settings.contact_tiktok,
     }
   ];
 
@@ -53,9 +94,9 @@ const ContactPage = () => {
       <div className="relative w-full h-[25vh] min-h-[220px] bg-[#9A2220] flex flex-col justify-center items-center text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative z-10 text-center px-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 drop-shadow-md">Contact Us</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 drop-shadow-md">{settings.contact_hero_title}</h1>
           <p className="text-lg md:text-xl opacity-90 font-medium">
-            Get in touch with Khmer America School
+            {settings.contact_hero_subtitle}
           </p>
         </div>
       </div>
@@ -143,7 +184,7 @@ const ContactPage = () => {
       <div className="w-full bg-white mt-auto">
         <div className="w-full h-[400px] md:h-[500px] bg-gray-200 relative">
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15635.882414777322!2d104.915725!3d11.5594002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513e9a5a3a71%3A0x6e0988ccafcb89af!2sSovannaphumi%20School!5e0!3m2!1sen!2skh!4v1700000000000!5m2!1sen!2skh" 
+            src={settings.contact_map_iframe} 
             width="100%" 
             height="100%" 
             style={{ border: 0 }} 

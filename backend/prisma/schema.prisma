@@ -68,4 +68,28 @@ model Setting {
   updatedAt DateTime @updatedAt
 }
 
+model Slide {
+  id               Int      @id @default(autoincrement())
+  image            String
+  tag              String
+  title            String
+  description      String
+  iconName         String   @default("graduation-cap")
+  primaryBtnText   String   @default("Learn More")
+  primaryBtnLink   String   @default("/programs")
+  secondaryBtnText String   @default("Contact Us")
+  secondaryBtnLink String   @default("/contact")
+  createdAt        DateTime @default(now())
+}
+
+model Program {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  path        String   @default("/programs")
+  iconName    String   @default("book-open")
+  colorClass  String   @default("bg-blue-50/70 text-blue-600 border border-blue-100/50")
+  createdAt   DateTime @default(now())
+}
+
 

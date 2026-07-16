@@ -1,40 +1,87 @@
 
 
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Globe, MessageSquare, Languages, ChevronRight } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
-const programs = [
+type BackendProgram = {
+  id: number;
+  title: string;
+  description: string;
+  path: string;
+  iconName: string;
+  colorClass: string;
+};
+
+const defaultPrograms: BackendProgram[] = [
   {
+    id: 1,
     title: 'Khmer General Education',
     description: 'A comprehensive national curriculum recognized by the Ministry of Education, Youth and Sport.',
     path: '/programs/kge',
-    icon: BookOpen,
-    color: 'bg-blue-50/70 text-blue-600 border border-blue-100/50',
+    iconName: 'book-open',
+    colorClass: 'bg-blue-50/70 text-blue-600 border border-blue-100/50',
   },
   {
+    id: 2,
     title: 'Integrated English Program (IEP)',
     description: 'An advanced dual-curriculum blending Cambodian national standards with international English proficiency.',
     path: '/programs/iep',
-    icon: Globe,
-    color: 'bg-amber-50/70 text-amber-500 border border-amber-100/50',
+    iconName: 'globe',
+    colorClass: 'bg-amber-50/70 text-amber-500 border border-amber-100/50',
   },
   {
+    id: 3,
     title: 'General English Program (GEP)',
     description: 'Dedicated English language instruction focused on listening, speaking, reading, and writing skills.',
     path: '/programs/gep',
-    icon: MessageSquare,
-    color: 'bg-emerald-50/70 text-emerald-600 border border-emerald-100/50',
+    iconName: 'message-square',
+    colorClass: 'bg-emerald-50/70 text-emerald-600 border border-emerald-100/50',
   },
   {
+    id: 4,
     title: 'Chinese Language Program',
     description: 'Standardized Chinese language courses equipping students for international opportunities.',
     path: '/programs/chinese',
-    icon: Languages,
-    color: 'bg-red-50/70 text-[#9A2220] border border-red-100/50',
+    iconName: 'languages',
+    colorClass: 'bg-red-50/70 text-[#9A2220] border border-red-100/50',
   },
 ];
 
 const ProgramsSection = () => {
+  const [programs, setPrograms] = useState<BackendProgram[]>(defaultPrograms);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/programs`)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch programs');
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setPrograms(data);
+        }
+      })
+      .catch(err => {
+        console.warn('Fallback to default programs:', err);
+      });
+  }, []);
+
+  const resolveIcon = (name: string) => {
+    switch (name) {
+      case 'globe':
+        return Globe;
+      case 'message-square':
+        return MessageSquare;
+      case 'languages':
+        return Languages;
+      case 'book-open':
+      default:
+        return BookOpen;
+    }
+  };
+
   return (
     <section className="py-20 bg-gray-50/40 border-y border-gray-100/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,7 +99,7 @@ const ProgramsSection = () => {
         {/* Programs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {programs.map((program, index) => {
-            const IconComponent = program.icon;
+            const IconComponent = resolveIcon(program.iconName);
             return (
               <Link
                 key={index}
@@ -70,7 +117,7 @@ const ProgramsSection = () => {
                 </div>
 
                 {/* Program Icon */}
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${program.color} mb-6 transition-transform duration-300 group-hover:scale-105`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${program.colorClass} mb-6 transition-transform duration-300 group-hover:scale-105`}>
                   <IconComponent className="w-6 h-6" />
                 </div>
 

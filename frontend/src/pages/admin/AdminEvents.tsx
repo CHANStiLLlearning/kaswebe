@@ -195,7 +195,7 @@ const AdminEvents = () => {
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase tracking-wider text-xs font-semibold">
-                  <th className="p-5">Image</th>
+                  <th className="p-5 w-24">ID</th>
                   <th className="p-5">Title</th>
                   <th className="p-5">Date</th>
                   <th className="p-5">Location</th>
@@ -207,53 +207,51 @@ const AdminEvents = () => {
                   <tr>
                     <td colSpan={5} className="p-10 text-center text-gray-500 italic">No events found.</td>
                   </tr>
-                ) : events.map((event) => (
-                  <tr key={event.id} className="hover:bg-gray-50/50 transition-colors group">
-                    <td className="p-5 align-middle">
-                      <div className="w-16 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200">
-                        <img 
-                          src={event.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=200'} 
-                          alt="" 
-                          className="w-full h-full object-cover" 
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=200';
-                          }}
-                        />
-                      </div>
-                    </td>
-                    <td className="p-5 align-middle font-bold text-gray-800">{event.title}</td>
-                    <td className="p-5 align-middle text-gray-600 font-medium">
-                      <span className="flex items-center gap-1.5">
-                        <Calendar className="w-4 h-4 text-[#9A2220]" />
-                        {event.date}
-                      </span>
-                    </td>
-                    <td className="p-5 align-middle text-gray-600">
-                      <span className="flex items-center gap-1.5">
-                        <MapPin className="w-4 h-4 text-[#9A2220]" />
-                        {event.location}
-                      </span>
-                    </td>
-                    <td className="p-5 align-middle text-right whitespace-nowrap">
-                      <div className="flex justify-end gap-2">
-                        <button 
-                          onClick={() => handleOpenModal(event)} 
-                          className="p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg transition-colors focus:ring-2 focus:ring-blue-200 outline-none" 
-                          title="Edit Event"
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button 
-                          onClick={() => setEventToDelete(event.id)} 
-                          className="p-2 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors focus:ring-2 focus:ring-red-200 outline-none" 
-                          title="Delete Event"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                ) : (
+                  events.map((event, idx) => {
+                    const serialNum = (page - 1) * 10 + (idx + 1);
+                    return (
+                      <tr key={event.id} className="hover:bg-gray-50/50 transition-colors group">
+                        <td className="p-5 align-middle">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-50 text-gray-600 text-xs font-mono font-bold border border-gray-200">
+                            {String(serialNum).padStart(4, '0')}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle font-bold text-gray-800">{event.title}</td>
+                        <td className="p-5 align-middle text-gray-600 font-medium">
+                          <span className="flex items-center gap-1.5">
+                            <Calendar className="w-4 h-4 text-[#9A2220]" />
+                            {event.date}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle text-gray-600">
+                          <span className="flex items-center gap-1.5">
+                            <MapPin className="w-4 h-4 text-[#9A2220]" />
+                            {event.location}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle text-right whitespace-nowrap">
+                          <div className="flex justify-end gap-2">
+                            <button 
+                              onClick={() => handleOpenModal(event)} 
+                              className="p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg transition-colors focus:ring-2 focus:ring-blue-200 outline-none" 
+                              title="Edit Event"
+                            >
+                              <Edit className="w-5 h-5" />
+                            </button>
+                            <button 
+                              onClick={() => setEventToDelete(event.id)} 
+                              className="p-2 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors focus:ring-2 focus:ring-red-200 outline-none" 
+                              title="Delete Event"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
@@ -356,9 +354,19 @@ const AdminEvents = () => {
 
               {/* Image Upload / URL */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Event Image</label>
-                <div className="flex flex-col sm:flex-row gap-4 items-center">
-                  <div className="w-full">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Event Image</label>
+                <div className="flex flex-col sm:flex-row gap-4 items-center bg-gray-50 p-4 rounded-2xl border border-gray-150">
+                  {/* Preview Thumbnail */}
+                  <div className="w-24 h-16 bg-gray-200 border border-gray-300 rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
+                    {imageFile ? (
+                      <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-full h-full object-cover" />
+                    ) : formData.image ? (
+                      <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <ImageIcon className="w-6 h-6 text-gray-400" />
+                    )}
+                  </div>
+                  <div className="flex-1 w-full">
                     <input 
                       type="file" 
                       accept="image/*"
@@ -367,19 +375,10 @@ const AdminEvents = () => {
                           setImageFile(e.target.files[0]);
                         }
                       }}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A2220] outline-none file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#9A2220]/10 file:text-[#9A2220] hover:file:bg-[#9A2220]/20 text-gray-600 cursor-pointer"
+                      className="text-xs text-gray-500 cursor-pointer w-full file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#9A2220]/10 file:text-[#9A2220] hover:file:bg-[#9A2220]/20 file:cursor-pointer"
                     />
+                    <p className="text-[10px] text-gray-400 mt-2">Upload a banner or photo for this event.</p>
                   </div>
-                  {formData.image && !imageFile && (
-                    <div className="shrink-0 text-xs font-medium text-gray-400 max-w-xs truncate">
-                      Current: {formData.image.split('/').pop()}
-                    </div>
-                  )}
-                  {imageFile && (
-                    <div className="shrink-0 text-xs font-semibold text-green-600 flex items-center gap-1">
-                      <ImageIcon className="w-4 h-4" /> Ready to upload
-                    </div>
-                  )}
                 </div>
               </div>
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Newspaper, Calendar, Mail, Users, LogOut, GraduationCap, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Calendar, Mail, Users, LogOut, GraduationCap, Menu, X, Sliders, BookOpen, Info, Phone } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const AdminLayout = () => {
@@ -10,6 +10,10 @@ const AdminLayout = () => {
 
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: <LayoutDashboard className="w-5 h-5" />, exact: true },
+    { name: 'Hero Slides', path: '/admin/slides', icon: <Sliders className="w-5 h-5" /> },
+    { name: 'Programs', path: '/admin/programs', icon: <BookOpen className="w-5 h-5" /> },
+    { name: 'About Us', path: '/admin/about-us', icon: <Info className="w-5 h-5" /> },
+    { name: 'Contact Info', path: '/admin/contact-us', icon: <Phone className="w-5 h-5" /> },
     { name: 'News Articles', path: '/admin/news', icon: <Newspaper className="w-5 h-5" /> },
     { name: 'Events', path: '/admin/events', icon: <Calendar className="w-5 h-5" /> },
     { name: 'Faculty', path: '/admin/faculty', icon: <GraduationCap className="w-5 h-5" /> },
@@ -51,7 +55,7 @@ const AdminLayout = () => {
       />
 
       {/* Sidebar Container */}
-      <aside className={`fixed inset-y-0 left-0 w-64 bg-[#1D055F] text-white flex flex-col shadow-xl z-50 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:relative md:flex ${
+      <aside className={`fixed md:static inset-y-0 left-0 md:left-auto w-64 bg-[#1D055F] text-white flex flex-col shadow-xl z-50 md:z-auto transition-transform md:transition-none duration-300 ease-in-out md:transform-none md:flex font-sans ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="p-6 border-b border-white/10 flex items-center justify-between gap-3">
@@ -64,7 +68,7 @@ const AdminLayout = () => {
           </div>
           <button 
             onClick={() => setIsSidebarOpen(false)}
-            className="md:hidden p-1.5 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-white"
+            className="md:hidden p-1.5 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-white outline-none"
           >
             <X className="w-5 h-5" />
           </button>
@@ -78,7 +82,7 @@ const AdminLayout = () => {
               end={item.exact}
               onClick={handleLinkClick}
               className={({ isActive }) => 
-                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium ${
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-sans font-medium outline-none ${
                   isActive 
                     ? 'bg-white text-[#9A2220] shadow-md' 
                     : 'text-white/80 hover:bg-white/10 hover:text-white'
@@ -95,7 +99,7 @@ const AdminLayout = () => {
           <NavLink 
             to="/" 
             onClick={handleLinkClick}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition-all duration-200 font-medium w-full text-center md:text-left justify-center md:justify-start"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition-all duration-200 font-sans font-medium w-full text-center md:text-left justify-center md:justify-start outline-none"
           >
             Back to Website
           </NavLink>
@@ -105,7 +109,7 @@ const AdminLayout = () => {
               setIsSidebarOpen(false);
               navigate('/kas-portal-entry');
             }} 
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-300 hover:bg-red-500/20 hover:text-red-100 transition-all duration-200 font-medium w-full text-left"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-300 hover:bg-red-500/20 hover:text-red-100 transition-all duration-200 font-sans font-medium w-full text-left outline-none"
           >
             <LogOut className="w-5 h-5" />
             Logout

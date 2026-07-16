@@ -1,70 +1,76 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, ArrowRight, Calendar, GraduationCap, Compass } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
-type Slide = {
+type BackendSlide = {
   image: string;
   tag: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
-  primaryBtn: { text: string; link: string };
-  secondaryBtn: { text: string; link: string };
+  iconName: string;
+  primaryBtnText: string;
+  primaryBtnLink: string;
+  secondaryBtnText: string;
+  secondaryBtnLink: string;
 };
 
-const slides: Slide[] = [
-  {
-    image: "/images/a.png",
-    tag: "WELCOME TO KHMER AMERICA SCHOOL",
-    title: "Shaping Leaders of the Digital Era",
-    description: "Offering high-quality education programs from kindergarten through high school, integrated with global standards and values.",
-    icon: <GraduationCap className="w-5 h-5 text-[#EBA525]" />,
-    primaryBtn: { text: "Our Programs", link: "/programs" },
-    secondaryBtn: { text: "Contact Us", link: "/contact" }
-  },
-  {
-    image: "/images/b.png",
-    tag: "ADMISSIONS OPEN FOR 2026-2027",
-    title: "Secure Your Child's Education Today",
-    description: "Register early to receive special enrollment privileges. Guided campus tours and consultations are available daily.",
-    icon: <Compass className="w-5 h-5 text-[#EBA525]" />,
-    primaryBtn: { text: "Admission Info", link: "/admissions" },
-    secondaryBtn: { text: "Inquire Now", link: "/contact" }
-  },
-  {
-    image: "/images/c.png",
-    tag: "DIVERSE & VIBRANT SCHOOL LIFE",
-    title: "A Community Built on Excellence",
-    description: "Engage in sports tournaments, science exhibitions, and art festivals to discover your inner talents and build confidence.",
-    icon: <Calendar className="w-5 h-5 text-[#EBA525]" />,
-    primaryBtn: { text: "School Events", link: "/eventpage" },
-    secondaryBtn: { text: "Read Latest News", link: "/news" }
-  },
-  {
-    image: "/images/d.png",
-    tag: "INTEGRATED ENGLISH & CHINESE",
-    title: "Fluent in Language, Global in Outlook",
-    description: "Master foreign languages from certified native instructors using interactive, modern classroom teaching technology.",
-    icon: <GraduationCap className="w-5 h-5 text-[#EBA525]" />,
-    primaryBtn: { text: "Language Courses", link: "/programs" },
-    secondaryBtn: { text: "Contact Office", link: "/contact" }
-  }
-];
-
 const HeroBanner = () => {
+  const [slides, setSlides] = useState<BackendSlide[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = slides.length;
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % totalSlides);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/slides`)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch slides');
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          setSlides(data.slice(0, 4));
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.warn('Error fetching slides:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % (totalSlides || 1));
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + (totalSlides || 1)) % (totalSlides || 1));
 
   // Auto-play feature
   useEffect(() => {
+    if (totalSlides <= 1) return;
     const timer = setInterval(() => {
       nextSlide();
     }, 7000); // Change slide every 7 seconds
     return () => clearInterval(timer);
-  }, []);
+  }, [totalSlides]);
+
+  const renderIcon = (name: string) => {
+    switch (name) {
+      case 'compass':
+        return <Compass className="w-5 h-5 text-[#EBA525]" />;
+      case 'calendar':
+        return <Calendar className="w-5 h-5 text-[#EBA525]" />;
+      default:
+        return <GraduationCap className="w-5 h-5 text-[#EBA525]" />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="relative w-full h-[75vh] min-h-[500px] bg-black flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-[#EBA525] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (totalSlides === 0) return null;
 
   return (
     <div className="relative w-full h-[75vh] min-h-[500px] overflow-hidden bg-black select-none font-sans">
@@ -104,7 +110,7 @@ const HeroBanner = () => {
               <div 
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#EBA525] transform transition-all duration-700 translate-y-4 opacity-0 animate-fade-in-up"
               >
-                {slide.icon}
+                {renderIcon(slide.iconName)}
                 {slide.tag}
               </div>
 
@@ -125,63 +131,75 @@ const HeroBanner = () => {
               </p>
 
               {/* Action Buttons */}
-              <div 
-                style={{ animationDelay: '600ms' }}
-                className="flex flex-wrap items-center gap-4 pt-2 transform transition-all duration-700 translate-y-4 opacity-0 animate-fade-in-up"
-              >
-                <NavLink 
-                  to={slide.primaryBtn.link}
-                  className="inline-flex items-center justify-center gap-2 bg-[#9A2220] hover:bg-[#8A1A18] text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+              {(slide.primaryBtnText || slide.secondaryBtnText) && (
+                <div 
+                  style={{ animationDelay: '600ms' }}
+                  className="flex flex-wrap items-center gap-4 pt-2 transform transition-all duration-700 translate-y-4 opacity-0 animate-fade-in-up"
                 >
-                  {slide.primaryBtn.text}
-                  <ArrowRight className="w-4 h-4" />
-                </NavLink>
-                <NavLink 
-                  to={slide.secondaryBtn.link}
-                  className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 px-8 rounded-xl border border-white/20 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  {slide.secondaryBtn.text}
-                </NavLink>
-              </div>
+                  {slide.primaryBtnText && (
+                    <NavLink 
+                      to={slide.primaryBtnLink || '#'}
+                      className="inline-flex items-center justify-center gap-2 bg-[#9A2220] hover:bg-[#8A1A18] text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+                    >
+                      {slide.primaryBtnText}
+                      <ArrowRight className="w-4 h-4" />
+                    </NavLink>
+                  )}
+                  {slide.secondaryBtnText && (
+                    <NavLink 
+                      to={slide.secondaryBtnLink || '#'}
+                      className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 px-8 rounded-xl border border-white/20 transition-all duration-300 hover:-translate-y-0.5"
+                    >
+                      {slide.secondaryBtnText}
+                    </NavLink>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
 
       {/* Custom Navigation Arrows */}
-      <button 
-        onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/10 hover:bg-white/25 text-white backdrop-blur-md flex items-center justify-center rounded-full transition-all duration-300 group border border-white/10 cursor-pointer"
-        aria-label="Previous Slide"
-      >
-        <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-      </button>
-      <button 
-        onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/10 hover:bg-white/25 text-white backdrop-blur-md flex items-center justify-center rounded-full transition-all duration-300 group border border-white/10 cursor-pointer"
-        aria-label="Next Slide"
-      >
-        <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-      </button>
+      {totalSlides > 1 && (
+        <>
+          <button 
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/10 hover:bg-white/25 text-white backdrop-blur-md flex items-center justify-center rounded-full transition-all duration-300 group border border-white/10 cursor-pointer"
+            aria-label="Previous Slide"
+          >
+            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+          </button>
+          <button 
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/10 hover:bg-white/25 text-white backdrop-blur-md flex items-center justify-center rounded-full transition-all duration-300 group border border-white/10 cursor-pointer"
+            aria-label="Next Slide"
+          >
+            <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </>
+      )}
 
       {/* Pagination Bar Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
-        {slides.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentSlide(idx)}
-            className="group relative flex flex-col items-center py-2 cursor-pointer"
-            aria-label={`Go to slide ${idx + 1}`}
-          >
-            {/* Visual indicator lines */}
-            <div className={`h-1 rounded-full transition-all duration-500 ${
-              currentSlide === idx 
-                ? 'bg-[#EBA525] w-8 sm:w-12' 
-                : 'bg-white/30 hover:bg-white/60 w-4 sm:w-6'
-            }`} />
-          </button>
-        ))}
-      </div>
+      {totalSlides > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlide(idx)}
+              className="group relative flex flex-col items-center py-2 cursor-pointer"
+              aria-label={`Go to slide ${idx + 1}`}
+            >
+              {/* Visual indicator lines */}
+              <div className={`h-1 rounded-full transition-all duration-500 ${
+                currentSlide === idx 
+                  ? 'bg-[#EBA525] w-8 sm:w-12' 
+                  : 'bg-white/30 hover:bg-white/60 w-4 sm:w-6'
+              }`} />
+            </button>
+          ))}
+        </div>
+      )}
 
     </div>
   );

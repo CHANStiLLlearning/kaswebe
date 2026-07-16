@@ -29,6 +29,7 @@ import AdminEvents from './pages/admin/AdminEvents';
 import AdminContacts from './pages/admin/AdminContacts';
 import AdminSubscribers from './pages/admin/AdminSubscribers';
 import AdminLogin from './pages/admin/AdminLogin';
+import AdminSlides from './pages/admin/AdminSlides';
 
 import ScrollToTop from './components/ScrollToTop'
 import ProtectedRoute from './components/ProtectedRoute';
@@ -36,6 +37,9 @@ import EventPage from './pages/EventPage';
 import FacultyPage from './pages/FacultyPage';
 import NotFoundPage from './pages/NotFoundPage';
 import AdminFaculty from './pages/admin/AdminFaculty';
+import AdminPrograms from './pages/admin/AdminPrograms';
+import AdminAboutUs from './pages/admin/AdminAboutUs';
+import AdminContactUs from './pages/admin/AdminContactUs';
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="min-h-screen bg-white font-sans flex flex-col">
@@ -64,6 +68,10 @@ function App() {
                 <Route path="news" element={<AdminNews />} />
                 <Route path="events" element={<AdminEvents />} />
                 <Route path="faculty" element={<AdminFaculty />} />
+                <Route path="slides" element={<AdminSlides />} />
+                <Route path="programs" element={<AdminPrograms />} />
+                <Route path="about-us" element={<AdminAboutUs />} />
+                <Route path="contact-us" element={<AdminContactUs />} />
                 <Route path="contacts" element={<AdminContacts />} />
                 <Route path="subscribers" element={<AdminSubscribers />} />
               </Route>

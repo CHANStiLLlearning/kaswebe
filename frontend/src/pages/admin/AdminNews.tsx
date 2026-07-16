@@ -186,7 +186,7 @@ const AdminNews = () => {
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase tracking-wider text-xs">
-                  <th className="p-5 font-semibold">Image</th>
+                  <th className="p-5 font-semibold w-24">ID</th>
                   <th className="p-5 font-semibold">Title</th>
                   <th className="p-5 font-semibold">Date</th>
                   <th className="p-5 font-semibold text-right">Actions</th>
@@ -195,8 +195,8 @@ const AdminNews = () => {
               <tbody className="divide-y divide-gray-50">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((index) => (
                   <tr key={index} className="animate-pulse">
-                    <td className="p-5 align-middle w-32">
-                      <div className="w-20 h-14 rounded-lg bg-gray-200"></div>
+                    <td className="p-5 align-middle">
+                      <div className="h-4 bg-gray-200 rounded w-10"></div>
                     </td>
                     <td className="p-5 align-middle">
                       <div className="h-4 bg-gray-200 rounded-md w-3/4 mb-2"></div>
@@ -223,7 +223,7 @@ const AdminNews = () => {
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase tracking-wider text-xs">
-                  <th className="p-5 font-semibold">Image</th>
+                  <th className="p-5 font-semibold w-24">ID</th>
                   <th className="p-5 font-semibold">Title</th>
                   <th className="p-5 font-semibold">Date</th>
                   <th className="p-5 font-semibold text-right">Actions</th>
@@ -232,33 +232,38 @@ const AdminNews = () => {
               <tbody className="divide-y divide-gray-50">
                 {articles.length === 0 ? (
                   <tr><td colSpan={4} className="p-10 text-center text-gray-500 italic">No news articles found.</td></tr>
-                ) : articles.map((article) => (
-                  <tr key={article.id} className="hover:bg-gray-50/50 transition-colors group">
-                    <td className="p-5 align-middle w-32">
-                      <div className="w-20 h-14 rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
-                        <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                      </div>
-                    </td>
-                    <td className="p-5 align-middle">
-                      <p className="font-bold text-gray-800 line-clamp-2 max-w-md">{article.title}</p>
-                    </td>
-                    <td className="p-5 align-middle">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium whitespace-nowrap">
-                        {article.date}
-                      </span>
-                    </td>
-                    <td className="p-5 align-middle text-right whitespace-nowrap">
-                      <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenModal(article)} className="p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg transition-colors focus:ring-2 focus:ring-blue-200 outline-none" title="Edit Article">
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button onClick={() => setArticleToDelete(article.id)} className="p-2 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors focus:ring-2 focus:ring-red-200 outline-none" title="Delete Article">
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                ) : (
+                  articles.map((article, idx) => {
+                    const serialNum = (page - 1) * 10 + (idx + 1);
+                    return (
+                      <tr key={article.id} className="hover:bg-gray-50/50 transition-colors group">
+                        <td className="p-5 align-middle">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-50 text-gray-600 text-xs font-mono font-bold border border-gray-200">
+                            {String(serialNum).padStart(4, '0')}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle">
+                          <p className="font-bold text-gray-800 line-clamp-2 max-w-md">{article.title}</p>
+                        </td>
+                        <td className="p-5 align-middle">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium whitespace-nowrap">
+                            {article.date}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle text-right whitespace-nowrap">
+                          <div className="flex justify-end gap-2">
+                            <button onClick={() => handleOpenModal(article)} className="p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg transition-colors focus:ring-2 focus:ring-blue-200 outline-none" title="Edit Article">
+                              <Edit className="w-5 h-5" />
+                            </button>
+                            <button onClick={() => setArticleToDelete(article.id)} className="p-2 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors focus:ring-2 focus:ring-red-200 outline-none" title="Delete Article">
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

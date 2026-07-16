@@ -461,6 +461,292 @@ app.delete('/api/subscribe/:id', async (req, res) => {
   }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+// --- Slides API ---
+app.get('/api/slides', async (req, res) => {
+  try {
+    const slides = await prisma.slide.findMany({
+      orderBy: { id: 'desc' }
+    });
+    res.json(slides);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch slides" });
+  }
+});
+
+app.post('/api/slides', async (req, res) => {
+  try {
+    const { image, tag, title, description, iconName, primaryBtnText, primaryBtnLink, secondaryBtnText, secondaryBtnLink } = req.body;
+    const slide = await prisma.slide.create({
+      data: {
+        image,
+        tag,
+        title,
+        description,
+        iconName: iconName || 'graduation-cap',
+        primaryBtnText: primaryBtnText || 'Learn More',
+        primaryBtnLink: primaryBtnLink || '/programs',
+        secondaryBtnText: secondaryBtnText || 'Contact Us',
+        secondaryBtnLink: secondaryBtnLink || '/contact'
+      }
+    });
+    res.status(201).json(slide);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create slide" });
+  }
+});
+
+app.put('/api/slides/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { image, tag, title, description, iconName, primaryBtnText, primaryBtnLink, secondaryBtnText, secondaryBtnLink } = req.body;
+    const slide = await prisma.slide.update({
+      where: { id },
+      data: {
+        image,
+        tag,
+        title,
+        description,
+        iconName,
+        primaryBtnText,
+        primaryBtnLink,
+        secondaryBtnText,
+        secondaryBtnLink
+      }
+    });
+    res.json(slide);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update slide" });
+  }
+});
+
+app.delete('/api/slides/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    await prisma.slide.delete({ where: { id } });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete slide" });
+  }
+});
+
+// --- Programs API ---
+app.get('/api/programs', async (req, res) => {
+  try {
+    const programs = await prisma.program.findMany({
+      orderBy: { id: 'asc' }
+    });
+    res.json(programs);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch programs" });
+  }
+});
+
+app.post('/api/programs', async (req, res) => {
+  try {
+    const { title, description, path, iconName, colorClass } = req.body;
+    const program = await prisma.program.create({
+      data: { title, description, path, iconName, colorClass }
+    });
+    res.status(201).json(program);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create program" });
+  }
+});
+
+app.put('/api/programs/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { title, description, path, iconName, colorClass } = req.body;
+    const program = await prisma.program.update({
+      where: { id },
+      data: { title, description, path, iconName, colorClass }
+    });
+    res.json(program);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update program" });
+  }
+});
+
+app.delete('/api/programs/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    await prisma.program.delete({ where: { id } });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete program" });
+  }
+});
+
+// --- Settings API ---
+app.get('/api/settings', async (req, res) => {
+  try {
+    const dbSettings = await prisma.setting.findMany();
+    const settingsMap = {};
+    dbSettings.forEach(s => {
+      settingsMap[s.key] = s.value;
+    });
+    res.json(settingsMap);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch settings" });
+  }
+});
+
+app.post('/api/settings', async (req, res) => {
+  try {
+    const settingsData = req.body;
+    const promises = Object.keys(settingsData).map(key => {
+      return prisma.setting.upsert({
+        where: { key },
+        update: { value: String(settingsData[key]) },
+        create: { key, value: String(settingsData[key]) }
+      });
+    });
+    await Promise.all(promises);
+    const dbSettings = await prisma.setting.findMany();
+    const settingsMap = {};
+    dbSettings.forEach(s => {
+      settingsMap[s.key] = s.value;
+    });
+    res.json(settingsMap);
+  } catch (error) {
+    console.error("Settings save error:", error);
+    res.status(500).json({ error: "Failed to save settings" });
+  }
+});
+
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Server is running on port ${PORT}`);
+  
+  // Seed default slides if table is empty
+  try {
+    const slideCount = await prisma.slide.count();
+    if (slideCount === 0) {
+      await prisma.slide.createMany({
+        data: [
+          {
+            image: "/images/a.png",
+            tag: "WELCOME TO KHMER AMERICA SCHOOL",
+            title: "Shaping Leaders of the Digital Era",
+            description: "Offering high-quality education programs from kindergarten through high school, integrated with global standards and values.",
+            iconName: "graduation-cap",
+            primaryBtnText: "Our Programs",
+            primaryBtnLink: "/programs",
+            secondaryBtnText: "Contact Us",
+            secondaryBtnLink: "/contact"
+          },
+          {
+            image: "/images/b.png",
+            tag: "ADMISSIONS OPEN FOR 2026-2027",
+            title: "Secure Your Child's Education Today",
+            description: "Register early to receive special enrollment privileges. Guided campus tours and consultations are available daily.",
+            iconName: "compass",
+            primaryBtnText: "Admission Info",
+            primaryBtnLink: "/admissions",
+            secondaryBtnText: "Inquire Now",
+            secondaryBtnLink: "/contact"
+          },
+          {
+            image: "/images/c.png",
+            tag: "DIVERSE & VIBRANT SCHOOL LIFE",
+            title: "A Community Built on Excellence",
+            description: "Engage in sports tournaments, science exhibitions, and art festivals to discover your inner talents and build confidence.",
+            iconName: "calendar",
+            primaryBtnText: "School Events",
+            primaryBtnLink: "/eventpage",
+            secondaryBtnText: "Read Latest News",
+            secondaryBtnLink: "/news"
+          },
+          {
+            image: "/images/d.png",
+            tag: "INTEGRATED ENGLISH & CHINESE",
+            title: "Fluent in Language, Global in Outlook",
+            description: "Master foreign languages from certified native instructors using interactive, modern classroom teaching technology.",
+            iconName: "graduation-cap",
+            primaryBtnText: "Language Courses",
+            primaryBtnLink: "/programs",
+            secondaryBtnText: "Contact Office",
+            secondaryBtnLink: "/contact"
+          }
+        ]
+      });
+      console.log("Sample slides seeded successfully.");
+    }
+  } catch (err) {
+    console.warn("Failed to automatically seed slides:", err.message);
+  }
+
+  // Seed default programs if table is empty
+  try {
+    const programCount = await prisma.program.count();
+    if (programCount === 0) {
+      await prisma.program.createMany({
+        data: [
+          {
+            title: 'Khmer General Education',
+            description: 'A comprehensive national curriculum recognized by the Ministry of Education, Youth and Sport.',
+            path: '/programs/kge',
+            iconName: 'book-open',
+            colorClass: 'bg-blue-50/70 text-blue-600 border border-blue-100/50'
+          },
+          {
+            title: 'Integrated English Program (IEP)',
+            description: 'An advanced dual-curriculum blending Cambodian national standards with international English proficiency.',
+            path: '/programs/iep',
+            iconName: 'globe',
+            colorClass: 'bg-amber-50/70 text-amber-500 border border-amber-100/50'
+          },
+          {
+            title: 'General English Program (GEP)',
+            description: 'Dedicated English language instruction focused on listening, speaking, reading, and writing skills.',
+            path: '/programs/gep',
+            iconName: 'message-square',
+            colorClass: 'bg-emerald-50/70 text-emerald-600 border border-emerald-100/50'
+          },
+          {
+            title: 'Chinese Language Program',
+            description: 'Standardized Chinese language courses equipping students for international opportunities.',
+            path: '/programs/chinese',
+            iconName: 'languages',
+            colorClass: 'bg-red-50/70 text-[#9A2220] border border-red-100/50'
+          }
+        ]
+      });
+      console.log("Sample programs seeded successfully.");
+    }
+  } catch (err) {
+    console.warn("Failed to automatically seed programs:", err.message);
+  }
+
+  // Seed default settings if empty or missing
+  try {
+    const defaultSettings = [
+      { key: 'about_hero_image', value: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1920' },
+      { key: 'about_hero_title', value: 'About Us' },
+      { key: 'about_mission_title', value: 'Our Mission' },
+      { key: 'about_mission_desc', value: 'To provide our students with the highest quality of education, combining international academic standards with rich Cambodian cultural values. We aim to nurture young minds to become innovative thinkers and responsible global citizens.' },
+      { key: 'about_vision_title', value: 'Our Vision' },
+      { key: 'about_vision_desc', value: 'To be the leading educational institution in Cambodia that is recognized internationally for academic excellence, character development, and equipping students with the essential skills to thrive in the 21st century.' },
+      { key: 'contact_hero_title', value: 'Contact Us' },
+      { key: 'contact_hero_subtitle', value: 'Get in touch with Khmer America School' },
+      { key: 'contact_phone', value: '(+855) 15 838 015' },
+      { key: 'contact_email', value: 'info@khmeramericaschool.edu.kh' },
+      { key: 'contact_telegram', value: 't.me/khmeramericaschoolcambodia' },
+      { key: 'contact_address', value: 'St. 60CVV Dermkor Village, Sangkat Chrouy changvar, Khan Chrouy Changvar, Phnom Penh.' },
+      { key: 'contact_linkedin', value: '@khmeramericaschoolcambodia' },
+      { key: 'contact_facebook', value: 'Khmer America School, Cambodia' },
+      { key: 'contact_instagram', value: '@khmeramericaschool' },
+      { key: 'contact_tiktok', value: '@khmeramericaschool' },
+      { key: 'contact_map_iframe', value: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15635.882414777322!2d104.915725!3d11.5594002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513e9a5a3a71%3A0x6e0988ccafcb89af!2sSovannaphumi%20School!5e0!3m2!1sen!2skh!4v1700000000000!5m2!1sen!2skh' }
+    ];
+    const promises = defaultSettings.map(async (s) => {
+      const exists = await prisma.setting.findUnique({ where: { key: s.key } });
+      if (!exists) {
+        await prisma.setting.create({ data: s });
+      }
+    });
+    await Promise.all(promises);
+    console.log("Sample settings seeded successfully.");
+  } catch (err) {
+    console.warn("Failed to automatically seed settings:", err.message);
+  }
 });

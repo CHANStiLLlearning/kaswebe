@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit, CheckCircle2, User, BookOpen, Globe, Image as ImageIcon } from 'lucide-react';
+import { Plus, Trash2, Edit, CheckCircle2, User, BookOpen, Globe } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 
 type Teacher = {
@@ -169,7 +169,7 @@ const AdminFaculty = () => {
             <table className="w-full text-left border-collapse min-w-[650px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase tracking-wider text-xs font-semibold">
-                  <th className="p-5">Photo</th>
+                  <th className="p-5 w-24">ID</th>
                   <th className="p-5">Name</th>
                   <th className="p-5">Role</th>
                   <th className="p-5">Subject</th>
@@ -182,44 +182,42 @@ const AdminFaculty = () => {
                   <tr>
                     <td colSpan={6} className="p-10 text-center text-gray-500 italic">No teachers found.</td>
                   </tr>
-                ) : teachers.map(teacher => (
-                  <tr key={teacher.id} className="hover:bg-gray-50/50 transition-colors group">
-                    <td className="p-5 align-middle">
-                      <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
-                        <img
-                          src={teacher.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=9A2220&color=fff&size=100`}
-                          alt=""
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=9A2220&color=fff&size=100`;
-                          }}
-                        />
-                      </div>
-                    </td>
-                    <td className="p-5 align-middle font-bold text-gray-800">{teacher.name}</td>
-                    <td className="p-5 align-middle text-gray-600 font-medium">{teacher.role}</td>
-                    <td className="p-5 align-middle text-gray-600">
-                      <span className="flex items-center gap-1.5">
-                        <BookOpen className="w-4 h-4 text-[#9A2220]" /> {teacher.subject}
-                      </span>
-                    </td>
-                    <td className="p-5 align-middle text-gray-600">
-                      <span className="flex items-center gap-1.5">
-                        <Globe className="w-4 h-4 text-[#9A2220]" /> {teacher.nationality}
-                      </span>
-                    </td>
-                    <td className="p-5 align-middle text-right whitespace-nowrap">
-                      <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenModal(teacher)} className="p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg transition-colors outline-none" title="Edit">
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button onClick={() => setTeacherToDelete(teacher.id)} className="p-2 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors outline-none" title="Delete">
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                ) : (
+                  teachers.map((teacher, idx) => {
+                    const serialNum = (page - 1) * 10 + (idx + 1);
+                    return (
+                      <tr key={teacher.id} className="hover:bg-gray-50/50 transition-colors group">
+                        <td className="p-5 align-middle">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-50 text-gray-600 text-xs font-mono font-bold border border-gray-200">
+                            {String(serialNum).padStart(4, '0')}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle font-bold text-gray-800">{teacher.name}</td>
+                        <td className="p-5 align-middle text-gray-600 font-medium">{teacher.role}</td>
+                        <td className="p-5 align-middle text-gray-600">
+                          <span className="flex items-center gap-1.5">
+                            <BookOpen className="w-4 h-4 text-[#9A2220]" /> {teacher.subject}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle text-gray-600">
+                          <span className="flex items-center gap-1.5">
+                            <Globe className="w-4 h-4 text-[#9A2220]" /> {teacher.nationality}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle text-right whitespace-nowrap">
+                          <div className="flex justify-end gap-2">
+                            <button onClick={() => handleOpenModal(teacher)} className="p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg transition-colors outline-none" title="Edit">
+                              <Edit className="w-5 h-5" />
+                            </button>
+                            <button onClick={() => setTeacherToDelete(teacher.id)} className="p-2 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors outline-none" title="Delete">
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
@@ -309,18 +307,28 @@ const AdminFaculty = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Profile Photo</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => { if (e.target.files?.[0]) setImageFile(e.target.files[0]); }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A2220] outline-none file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#9A2220]/10 file:text-[#9A2220] hover:file:bg-[#9A2220]/20 text-gray-600 cursor-pointer"
-                />
-                {imageFile && (
-                  <p className="text-xs font-semibold text-green-600 flex items-center gap-1 mt-1">
-                    <ImageIcon className="w-3.5 h-3.5" /> Ready to upload
-                  </p>
-                )}
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Profile Photo</label>
+                <div className="flex flex-col sm:flex-row gap-4 items-center bg-gray-50 p-4 rounded-2xl border border-gray-150">
+                  {/* Preview Thumbnail */}
+                  <div className="w-16 h-16 rounded-full border border-gray-300 overflow-hidden shrink-0 flex items-center justify-center bg-gray-200">
+                    {imageFile ? (
+                      <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-full h-full object-cover" />
+                    ) : formData.image ? (
+                      <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-6 h-6 text-gray-400" />
+                    )}
+                  </div>
+                  <div className="flex-1 w-full">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => { if (e.target.files?.[0]) setImageFile(e.target.files[0]); }}
+                      className="text-xs text-gray-500 cursor-pointer w-full file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#9A2220]/10 file:text-[#9A2220] hover:file:bg-[#9A2220]/20 file:cursor-pointer"
+                    />
+                    <p className="text-[10px] text-gray-400 mt-2">Upload a profile picture for this teacher.</p>
+                  </div>
+                </div>
               </div>
 
               <div className="flex gap-3 pt-4 border-t mt-2">
