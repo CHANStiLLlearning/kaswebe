@@ -11,6 +11,8 @@ type SchoolEvent = {
   location: string;
   date: string;
   image?: string;
+  status?: string;
+  badge?: string;
 };
 
 const AdminEvents = () => {
@@ -25,7 +27,7 @@ const AdminEvents = () => {
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<SchoolEvent | null>(null);
-  const [formData, setFormData] = useState({ title: '', description: '', location: '', date: '', image: '' });
+  const [formData, setFormData] = useState({ title: '', description: '', location: '', date: '', image: '', status: 'Open', badge: 'None' });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -133,14 +135,16 @@ const AdminEvents = () => {
         description: event.description, 
         location: event.location,
         date: event.date,
-        image: event.image || ''
+        image: event.image || '',
+        status: event.status || 'Open',
+        badge: event.badge || 'None'
       });
     } else {
       setEditingEvent(null);
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       const today = new Date();
       const formattedDate = `${months[today.getMonth()]} ${String(today.getDate()).padStart(2, '0')}, ${today.getFullYear()}`;
-      setFormData({ title: '', description: '', location: 'Phnom Penh Campus', date: formattedDate, image: '' });
+      setFormData({ title: '', description: '', location: 'Phnom Penh Campus', date: formattedDate, image: '', status: 'Open', badge: 'None' });
     }
     setImageFile(null);
     setIsModalOpen(true);
@@ -325,13 +329,15 @@ const AdminEvents = () => {
                   <th className="p-5">Title</th>
                   <th className="p-5">Date</th>
                   <th className="p-5">Location</th>
+                  <th className="p-5">Status</th>
+                  <th className="p-5">Badge</th>
                   <th className="p-5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50 text-sm">
                 {events.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-10 text-center text-gray-500 italic">No events found.</td>
+                    <td colSpan={7} className="p-10 text-center text-gray-500 italic">No events found.</td>
                   </tr>
                 ) : (
                   events.map((event, idx) => {
@@ -354,6 +360,22 @@ const AdminEvents = () => {
                           <span className="flex items-center gap-1.5">
                             <MapPin className="w-4 h-4 text-[#9A2220]" />
                             {event.location}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle">
+                          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
+                            event.status === 'Closed' ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-700'
+                          }`}>
+                            {event.status || 'Open'}
+                          </span>
+                        </td>
+                        <td className="p-5 align-middle">
+                          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
+                            event.badge === 'None' || !event.badge ? 'bg-gray-100 text-gray-500' : 
+                            event.badge === 'Featured' ? 'bg-yellow-100 text-yellow-700' : 
+                            'bg-blue-100 text-blue-700'
+                          }`}>
+                            {event.badge || 'None'}
                           </span>
                         </td>
                         <td className="p-5 align-middle text-right whitespace-nowrap">
@@ -474,6 +496,30 @@ const AdminEvents = () => {
                     <option value="Siem Reap Campus">Siem Reap Campus</option>
                     <option value="Head Office Main Hall">Head Office Main Hall</option>
                     <option value="Online / Virtual">Online / Virtual</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Event Status</label>
+                  <select 
+                    value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A2220] outline-none bg-white text-gray-900"
+                  >
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Event Badge</label>
+                  <select 
+                    value={formData.badge} onChange={e => setFormData({...formData, badge: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A2220] outline-none bg-white text-gray-900"
+                  >
+                    <option value="None">None (Disabled)</option>
+                    <option value="Featured">Featured Event</option>
+                    <option value="New">New Event</option>
                   </select>
                 </div>
               </div>

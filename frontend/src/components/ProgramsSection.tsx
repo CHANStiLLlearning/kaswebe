@@ -14,43 +14,9 @@ type BackendProgram = {
   colorClass: string;
 };
 
-const defaultPrograms: BackendProgram[] = [
-  {
-    id: 1,
-    title: 'Khmer General Education',
-    description: 'A comprehensive national curriculum recognized by the Ministry of Education, Youth and Sport.',
-    path: '/programs/kge',
-    iconName: 'book-open',
-    colorClass: 'bg-blue-50/70 text-blue-600 border border-blue-100/50',
-  },
-  {
-    id: 2,
-    title: 'Integrated English Program (IEP)',
-    description: 'An advanced dual-curriculum blending Cambodian national standards with international English proficiency.',
-    path: '/programs/iep',
-    iconName: 'globe',
-    colorClass: 'bg-amber-50/70 text-amber-500 border border-amber-100/50',
-  },
-  {
-    id: 3,
-    title: 'General English Program (GEP)',
-    description: 'Dedicated English language instruction focused on listening, speaking, reading, and writing skills.',
-    path: '/programs/gep',
-    iconName: 'message-square',
-    colorClass: 'bg-emerald-50/70 text-emerald-600 border border-emerald-100/50',
-  },
-  {
-    id: 4,
-    title: 'Chinese Language Program',
-    description: 'Standardized Chinese language courses equipping students for international opportunities.',
-    path: '/programs/chinese',
-    iconName: 'languages',
-    colorClass: 'bg-red-50/70 text-[#9A2220] border border-red-100/50',
-  },
-];
-
 const ProgramsSection = () => {
-  const [programs, setPrograms] = useState<BackendProgram[]>(defaultPrograms);
+  const [programs, setPrograms] = useState<BackendProgram[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/programs`)
@@ -59,13 +25,14 @@ const ProgramsSection = () => {
         return res.json();
       })
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setPrograms(data);
         }
       })
       .catch(err => {
-        console.warn('Fallback to default programs:', err);
-      });
+        console.warn('Failed to fetch programs:', err);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const resolveIcon = (name: string) => {
@@ -80,6 +47,16 @@ const ProgramsSection = () => {
       default:
         return BookOpen;
     }
+  };
+
+  const getThemeClasses = (colorClass: string) => {
+    if (colorClass.includes('blue')) return 'text-blue-600 group-hover:bg-blue-600';
+    if (colorClass.includes('amber')) return 'text-[#EBA525] group-hover:bg-[#EBA525]';
+    if (colorClass.includes('emerald')) return 'text-emerald-600 group-hover:bg-emerald-600';
+    if (colorClass.includes('red')) return 'text-[#9A2220] group-hover:bg-[#9A2220]';
+    if (colorClass.includes('violet')) return 'text-violet-600 group-hover:bg-violet-600';
+    if (colorClass.includes('rose')) return 'text-rose-600 group-hover:bg-rose-600';
+    return 'text-[#9A2220] group-hover:bg-[#9A2220]'; // Default fallback
   };
 
   return (
@@ -97,43 +74,51 @@ const ProgramsSection = () => {
         </div>
 
         {/* Programs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <div className="w-10 h-10 border-4 border-[#9A2220] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : programs.length === 0 ? (
+          <div className="text-center py-12 text-gray-500 font-medium bg-white rounded-2xl border border-gray-100 shadow-sm max-w-5xl mx-auto">
+            No academic programs have been added yet.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {programs.map((program, index) => {
             const IconComponent = resolveIcon(program.iconName);
+            const themeClasses = getThemeClasses(program.colorClass);
+            
             return (
-              <Link
-                key={index}
+              <Link 
+                key={index} 
                 to={program.path}
-                className="relative bg-white rounded-2xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_30px_-5px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group flex flex-col items-start text-left cursor-pointer"
+                className="bg-white rounded-2xl p-8 flex flex-col justify-between shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group overflow-hidden relative text-left"
               >
-                {/* Decorative background shape in top right corner */}
-                <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden rounded-tr-2xl pointer-events-none">
-                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-gray-50 rounded-full transition-all duration-300 group-hover:bg-[#9A2220]/5 group-hover:scale-110"></div>
+                {/* Subtle hover gradient decoration */}
+                <div className="absolute -right-20 -top-20 w-40 h-40 bg-gray-50 rounded-full group-hover:scale-150 transition-transform duration-700 ease-out z-0"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className={`w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center ${themeClasses} group-hover:text-white transition-colors duration-300 shadow-sm`}>
+                      <IconComponent className="w-8 h-8" />
+                    </div>
+                    <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 group-hover:border-[#EBA525] group-hover:text-[#EBA525] group-hover:bg-yellow-50 transition-colors">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-gray-800 mb-3 group-hover:text-[#9A2220] transition-colors">{program.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {program.description}
+                  </p>
                 </div>
-
-                {/* Arrow Icon in Top Right */}
-                <div className="absolute top-6 right-6 w-9 h-9 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 group-hover:text-[#9A2220] group-hover:border-[#9A2220]/30 transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)] z-10">
-                  <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </div>
-
-                {/* Program Icon */}
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${program.colorClass} mb-6 transition-transform duration-300 group-hover:scale-105`}>
-                  <IconComponent className="w-6 h-6" />
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl md:text-2xl font-bold font-serif text-gray-800 mb-3 group-hover:text-[#9A2220] transition-colors leading-tight">
-                  {program.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-gray-500 text-sm md:text-[14px] leading-relaxed font-sans pr-4">
-                  {program.description}
-                </p>
               </Link>
             );
           })}
         </div>
+        )}
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, MapPin, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Sparkles, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
@@ -10,6 +10,8 @@ type SchoolEvent = {
   location: string;
   date: string;
   image?: string;
+  status?: string;
+  badge?: string;
 };
 
 const stripStyles = (html: string) =>
@@ -83,6 +85,20 @@ const EventsSection = () => {
                       (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800';
                     }}
                   />
+                  <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1.5 border border-white/20 z-10">
+                    <span className={`w-2 h-2 rounded-full ${event.status === 'Closed' ? 'bg-gray-400' : 'bg-green-500'}`}></span>
+                    {event.status === 'Closed' ? 'Closed' : 'Open'}
+                  </div>
+                  {event.badge && event.badge !== 'None' && (
+                    <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1.5 border border-white/20 z-10">
+                      {event.badge === 'Featured' ? (
+                        <Sparkles className="w-3.5 h-3.5 text-[#EBA525]" />
+                      ) : (
+                        <Star className="w-3.5 h-3.5 text-blue-500" />
+                      )}
+                      {event.badge} Event
+                    </div>
+                  )}
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">

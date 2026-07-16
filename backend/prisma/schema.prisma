@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model NewsArticle {
@@ -26,6 +27,8 @@ model Event {
   location    String
   date        String
   image       String?
+  status      String   @default("Open")
+  badge       String   @default("None")
   createdAt   DateTime @default(now())
 }
 

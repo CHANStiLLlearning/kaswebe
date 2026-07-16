@@ -243,9 +243,9 @@ app.get('/api/events', async (req, res) => {
 
 app.post('/api/events', async (req, res) => {
   try {
-    const { title, description, location, date, image } = req.body;
+    const { title, description, location, date, image, status, badge } = req.body;
     const event = await prisma.event.create({
-      data: { title, description, location, date, image }
+      data: { title, description, location, date, image, status, badge }
     });
     res.status(201).json(event);
   } catch (error) {
@@ -256,10 +256,10 @@ app.post('/api/events', async (req, res) => {
 app.put('/api/events/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { title, description, location, date, image } = req.body;
+    const { title, description, location, date, image, status, badge } = req.body;
     const event = await prisma.event.update({
       where: { id },
-      data: { title, description, location, date, image }
+      data: { title, description, location, date, image, status, badge }
     });
     res.json(event);
   } catch (error) {
@@ -274,6 +274,54 @@ app.delete('/api/events/:id', async (req, res) => {
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: "Failed to delete event" });
+  }
+});
+
+// --- Programs API ---
+app.get('/api/programs', async (req, res) => {
+  try {
+    const programs = await prisma.program.findMany({
+      orderBy: { id: 'asc' }
+    });
+    res.json(programs);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch programs" });
+  }
+});
+
+app.post('/api/programs', async (req, res) => {
+  try {
+    const { title, description, path, iconName, colorClass } = req.body;
+    const program = await prisma.program.create({
+      data: { title, description, path, iconName, colorClass }
+    });
+    res.status(201).json(program);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create program" });
+  }
+});
+
+app.put('/api/programs/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { title, description, path, iconName, colorClass } = req.body;
+    const program = await prisma.program.update({
+      where: { id },
+      data: { title, description, path, iconName, colorClass }
+    });
+    res.json(program);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update program" });
+  }
+});
+
+app.delete('/api/programs/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    await prisma.program.delete({ where: { id } });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete program" });
   }
 });
 
@@ -749,105 +797,7 @@ app.post('/api/settings', async (req, res) => {
 app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Server is running on port ${PORT}`);
   
-  // Seed default slides if table is empty
-  try {
-    const slideCount = await prisma.slide.count();
-    if (slideCount === 0) {
-      await prisma.slide.createMany({
-        data: [
-          {
-            image: "/images/a.png",
-            tag: "WELCOME TO KHMER AMERICA SCHOOL",
-            title: "Shaping Leaders of the Digital Era",
-            description: "Offering high-quality education programs from kindergarten through high school, integrated with global standards and values.",
-            iconName: "graduation-cap",
-            primaryBtnText: "Our Programs",
-            primaryBtnLink: "/programs",
-            secondaryBtnText: "Contact Us",
-            secondaryBtnLink: "/contact"
-          },
-          {
-            image: "/images/b.png",
-            tag: "ADMISSIONS OPEN FOR 2026-2027",
-            title: "Secure Your Child's Education Today",
-            description: "Register early to receive special enrollment privileges. Guided campus tours and consultations are available daily.",
-            iconName: "compass",
-            primaryBtnText: "Admission Info",
-            primaryBtnLink: "/admissions",
-            secondaryBtnText: "Inquire Now",
-            secondaryBtnLink: "/contact"
-          },
-          {
-            image: "/images/c.png",
-            tag: "DIVERSE & VIBRANT SCHOOL LIFE",
-            title: "A Community Built on Excellence",
-            description: "Engage in sports tournaments, science exhibitions, and art festivals to discover your inner talents and build confidence.",
-            iconName: "calendar",
-            primaryBtnText: "School Events",
-            primaryBtnLink: "/eventpage",
-            secondaryBtnText: "Read Latest News",
-            secondaryBtnLink: "/news"
-          },
-          {
-            image: "/images/d.png",
-            tag: "INTEGRATED ENGLISH & CHINESE",
-            title: "Fluent in Language, Global in Outlook",
-            description: "Master foreign languages from certified native instructors using interactive, modern classroom teaching technology.",
-            iconName: "graduation-cap",
-            primaryBtnText: "Language Courses",
-            primaryBtnLink: "/programs",
-            secondaryBtnText: "Contact Office",
-            secondaryBtnLink: "/contact"
-          }
-        ]
-      });
-      console.log("Sample slides seeded successfully.");
-    }
-  } catch (err) {
-    console.warn("Failed to automatically seed slides:", err.message);
-  }
-
-  // Seed default programs if table is empty
-  try {
-    const programCount = await prisma.program.count();
-    if (programCount === 0) {
-      await prisma.program.createMany({
-        data: [
-          {
-            title: 'Khmer General Education',
-            description: 'A comprehensive national curriculum recognized by the Ministry of Education, Youth and Sport.',
-            path: '/programs/kge',
-            iconName: 'book-open',
-            colorClass: 'bg-blue-50/70 text-blue-600 border border-blue-100/50'
-          },
-          {
-            title: 'Integrated English Program (IEP)',
-            description: 'An advanced dual-curriculum blending Cambodian national standards with international English proficiency.',
-            path: '/programs/iep',
-            iconName: 'globe',
-            colorClass: 'bg-amber-50/70 text-amber-500 border border-amber-100/50'
-          },
-          {
-            title: 'General English Program (GEP)',
-            description: 'Dedicated English language instruction focused on listening, speaking, reading, and writing skills.',
-            path: '/programs/gep',
-            iconName: 'message-square',
-            colorClass: 'bg-emerald-50/70 text-emerald-600 border border-emerald-100/50'
-          },
-          {
-            title: 'Chinese Language Program',
-            description: 'Standardized Chinese language courses equipping students for international opportunities.',
-            path: '/programs/chinese',
-            iconName: 'languages',
-            colorClass: 'bg-red-50/70 text-[#9A2220] border border-red-100/50'
-          }
-        ]
-      });
-      console.log("Sample programs seeded successfully.");
-    }
-  } catch (err) {
-    console.warn("Failed to automatically seed programs:", err.message);
-  }
+  // Static sample data generation for slides and programs removed as requested.
 
   // Seed default settings if empty or missing
   try {

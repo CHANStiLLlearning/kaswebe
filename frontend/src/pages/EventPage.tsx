@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Search, Sparkles, ChevronRight, X } from 'lucide-react';
+import { Calendar, MapPin, Search, Sparkles, ChevronRight, X, Star } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
@@ -10,6 +10,8 @@ type SchoolEvent = {
   location: string;
   date: string;
   image?: string;
+  status?: string;
+  badge?: string;
 };
 
 // Strip inline style attributes from HTML to avoid editor color overrides
@@ -222,10 +224,16 @@ const EventPage = () => {
                           (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800';
                         }}
                       />
-                      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1.5 border border-white/20">
-                        <Sparkles className="w-3.5 h-3.5 text-[#EBA525]" />
-                        Featured Event
-                      </div>
+                      {event.badge && event.badge !== 'None' && (
+                        <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1.5 border border-white/20">
+                          {event.badge === 'Featured' ? (
+                            <Sparkles className="w-3.5 h-3.5 text-[#EBA525]" />
+                          ) : (
+                            <Star className="w-3.5 h-3.5 text-blue-500" />
+                          )}
+                          {event.badge} Event
+                        </div>
+                      )}
                     </div>
 
                     {/* Card Content */}
@@ -252,8 +260,10 @@ const EventPage = () => {
                       />
 
                       <div className="pt-4 border-t border-gray-50 mt-auto flex items-center justify-between">
-                        <span className="text-xs font-bold text-[#9A2220] uppercase tracking-wider">
-                          Open Event
+                        <span className={`text-xs font-bold uppercase tracking-wider ${
+                          event.status === 'Closed' ? 'text-gray-500' : 'text-[#9A2220]'
+                        }`}>
+                          {event.status === 'Closed' ? 'Closed Event' : 'Open Event'}
                         </span>
                         <NavLink 
                           to="/contact" 

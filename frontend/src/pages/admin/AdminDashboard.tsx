@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Newspaper, Mail, Users, Clock, Calendar as CalendarIcon, Filter, GraduationCap, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 import { API_BASE_URL } from '../../config';
 
 type DataItem = { createdAt: string };
@@ -17,9 +17,17 @@ const AdminDashboard = () => {
     contacts: [] as DataItem[],
     subscribers: [] as DataItem[],
     teachers: [] as DataItem[],
+    programs: [] as DataItem[],
   });
 
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -29,24 +37,28 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [newsRes, eventsRes, contactsRes, subsRes, teachersRes] = await Promise.all([
+        const [newsRes, eventsRes, contactsRes, subsRes, teachersRes, programsRes] = await Promise.all([
           fetch(`${API_BASE_URL}/api/news`),
           fetch(`${API_BASE_URL}/api/events`),
           fetch(`${API_BASE_URL}/api/contact`),
           fetch(`${API_BASE_URL}/api/subscribe`),
           fetch(`${API_BASE_URL}/api/teachers?limit=1000`),
+          fetch(`${API_BASE_URL}/api/programs`).catch(() => null), // Catch if not implemented yet
         ]);
         const news = await newsRes.json();
         const events = await eventsRes.json();
         const contacts = await contactsRes.json();
         const subs = await subsRes.json();
         const teachers = await teachersRes.json();
+        const programs = programsRes && programsRes.ok ? await programsRes.json() : [];
+        
         setRawData({
           news: news.data || [],
           events: events.data || [],
           contacts,
           subscribers: subs,
           teachers: teachers.data || [],
+          programs: Array.isArray(programs) ? programs : [],
         });
       } catch (err) {
         console.error('Failed to fetch dashboard stats', err);
@@ -79,6 +91,7 @@ const AdminDashboard = () => {
     contacts: filterByDate(rawData.contacts).length,
     subscribers: filterByDate(rawData.subscribers).length,
     teachers: filterByDate(rawData.teachers).length,
+    programs: filterByDate(rawData.programs).length,
   };
 
   const cards = [
@@ -132,6 +145,16 @@ const AdminDashboard = () => {
       lightText: 'text-rose-600',
       shadowColor: 'shadow-rose-200',
     },
+    {
+      title: 'Programs',
+      value: filteredStats.programs,
+      icon: <GraduationCap className="w-6 h-6" />,
+      path: '/admin/programs',
+      gradient: 'from-indigo-500 to-indigo-600',
+      lightBg: 'bg-indigo-50',
+      lightText: 'text-indigo-600',
+      shadowColor: 'shadow-indigo-200',
+    },
   ];
 
   const chartData = [
@@ -140,6 +163,7 @@ const AdminDashboard = () => {
     { name: 'Contacts', count: filteredStats.contacts, color: '#8b5cf6' },
     { name: 'Subscribers', count: filteredStats.subscribers, color: '#f59e0b' },
     { name: 'Faculty', count: filteredStats.teachers, color: '#9A2220' },
+    { name: 'Programs', count: filteredStats.programs, color: '#6366f1' },
   ];
 
   const filterLabel =
@@ -205,8 +229,7 @@ const AdminDashboard = () => {
         </div>
       ) : (
         <>
-          {/* ── Stat Cards ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-4 mb-8">
             {cards.map((card, idx) => (
               <NavLink
                 key={idx}
@@ -249,22 +272,45 @@ const AdminDashboard = () => {
                   {filterLabel}
                 </span>
               </div>
-              <div className="h-72 w-full">
+              <div className="h-72 w-full flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} margin={{ top: 10, right: 10, left: -15, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 11, fontWeight: 600 }} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 11 }} allowDecimals={false} width={28} />
-                    <RechartsTooltip
-                      cursor={{ fill: '#f9fafb', radius: 8 }}
-                      contentStyle={{ borderRadius: '12px', border: '1px solid #f0f0f0', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)', fontSize: '13px' }}
-                    />
-                    <Bar dataKey="count" radius={[8, 8, 0, 0]} maxBarSize={52}>
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Bar>
-                  </BarChart>
+                  {isMobile ? (
+                    <PieChart>
+                      <Pie
+                        data={chartData.filter(d => d.count > 0)}
+                        dataKey="count"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={90}
+                        paddingAngle={5}
+                      >
+                        {chartData.filter(d => d.count > 0).map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip 
+                        contentStyle={{ borderRadius: '12px', border: '1px solid #f0f0f0', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)', fontSize: '13px' }}
+                      />
+                      <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                    </PieChart>
+                  ) : (
+                    <BarChart data={chartData} margin={{ top: 10, right: 10, left: -15, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 11, fontWeight: 600 }} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 11 }} allowDecimals={false} width={28} />
+                      <RechartsTooltip
+                        cursor={{ fill: '#f9fafb', radius: 8 }}
+                        contentStyle={{ borderRadius: '12px', border: '1px solid #f0f0f0', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)', fontSize: '13px' }}
+                      />
+                      <Bar dataKey="count" radius={[8, 8, 0, 0]} maxBarSize={52}>
+                        {chartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  )}
                 </ResponsiveContainer>
               </div>
             </div>
