@@ -39,7 +39,7 @@ const Footer = () => {
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           
           {/* Contact Us */}
           <div>
@@ -80,30 +80,6 @@ const Footer = () => {
                 className="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center hover:scale-110 transition-transform"
               >
                 <FaFacebook className="text-white text-xl" />
-              </a>
-            </div>
-          </div>
-          
-          {/* Download SPS App */}
-          <div>
-            <h3 className="text-xl font-bold mb-6 pb-2 border-b border-white/20 inline-block">DOWNLOAD SPS APP</h3>
-            <p className="mb-6 text-white/90 leading-relaxed">
-              Stay connected to your child's school experience like never before. Our app is designed to keep parents and guardians informed and engaged.
-            </p>
-            <div className="flex flex-col gap-3">
-              <a href="#" className="hover:opacity-80 transition-opacity w-36">
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
-                  alt="App Store" 
-                  className="w-full"
-                />
-              </a>
-              <a href="#" className="hover:opacity-80 transition-opacity w-36">
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-                  alt="Google Play" 
-                  className="w-full"
-                />
               </a>
             </div>
           </div>

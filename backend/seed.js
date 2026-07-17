@@ -14,7 +14,7 @@ async function main() {
       password: password
     }
   });
-  console.log('Admin user seeded: admin / admin123');
+  // console.log('Admin user seeded: admin / admin123');
 
   // Static sample data generation removed as requested.
 }
