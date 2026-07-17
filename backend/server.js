@@ -208,6 +208,7 @@ app.get('/api/events', async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const search = req.query.search || '';
     const timeframe = req.query.timeframe || 'all';
+    const dateFilter = req.query.date || '';
     
     const where = search ? {
       OR: [
@@ -221,6 +222,23 @@ app.get('/api/events', async (req, res) => {
       where,
       orderBy: { createdAt: 'desc' },
     });
+
+    // Date filtering (Specific Calendar Date match)
+    if (dateFilter) {
+      const targetTime = Date.parse(dateFilter);
+      if (!isNaN(targetTime)) {
+        const targetDate = new Date(targetTime);
+        targetDate.setHours(0, 0, 0, 0);
+        
+        events = events.filter(event => {
+          const eventTime = Date.parse(event.date);
+          if (isNaN(eventTime)) return false;
+          const eventDate = new Date(eventTime);
+          eventDate.setHours(0, 0, 0, 0);
+          return eventDate.getTime() === targetDate.getTime();
+        });
+      }
+    }
 
     // Date filtering (Upcoming vs Past) in memory
     const today = new Date();

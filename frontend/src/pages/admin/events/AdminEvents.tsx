@@ -24,6 +24,7 @@ const AdminEvents = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDateFilter, setSelectedDateFilter] = useState('all');
+  const [selectedSpecificDate, setSelectedSpecificDate] = useState('');
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -109,7 +110,7 @@ const AdminEvents = () => {
 
   const fetchEvents = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/events?page=${page}&limit=10&search=${encodeURIComponent(searchQuery)}&timeframe=${selectedDateFilter}`);
+      const res = await fetch(`${API_BASE_URL}/api/events?page=${page}&limit=10&search=${encodeURIComponent(searchQuery)}&timeframe=${selectedDateFilter}&date=${selectedSpecificDate}`);
       const result = await res.json();
       setEvents(result.data || []);
       setTotalPages(result?.pagination?.totalPages || 1);
@@ -121,8 +122,12 @@ const AdminEvents = () => {
   };
 
   useEffect(() => {
+    setPage(1);
+  }, [searchQuery, selectedDateFilter, selectedSpecificDate]);
+
+  useEffect(() => {
     fetchEvents();
-  }, [page, searchQuery, selectedDateFilter]);
+  }, [page, searchQuery, selectedDateFilter, selectedSpecificDate]);
 
   useEffect(() => {
     fetchEventSettings();
@@ -319,6 +324,30 @@ const AdminEvents = () => {
             <option value="upcoming">Upcoming</option>
             <option value="past">Past</option>
           </select>
+          <div className="relative w-full sm:w-auto flex items-center">
+            <input 
+              type="date" 
+              value={selectedSpecificDate}
+              onChange={(e) => {
+                setSelectedSpecificDate(e.target.value);
+                setPage(1);
+              }}
+              className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E3A8A] outline-none text-sm font-sans bg-white text-gray-700 cursor-pointer w-full"
+            />
+            {selectedSpecificDate && (
+              <button 
+                onClick={() => {
+                  setSelectedSpecificDate('');
+                  setPage(1);
+                }}
+                className="absolute right-2 text-gray-400 hover:text-red-500 font-extrabold text-lg"
+                style={{ zIndex: 10 }}
+                title="Clear Date"
+              >
+                &times;
+              </button>
+            )}
+          </div>
           <button 
             onClick={() => handleOpenModal()}
             className="bg-[#1E3A8A] hover:bg-[#172554] text-white px-5 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors whitespace-nowrap font-sans shrink-0"

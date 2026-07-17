@@ -31,6 +31,7 @@ const EventPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCampus, setSelectedCampus] = useState('all');
   const [selectedDateFilter, setSelectedDateFilter] = useState('all');
+  const [selectedSpecificDate, setSelectedSpecificDate] = useState('');
   const [settings, setSettings] = useState({
     event_hero_title: 'School Events & Activities',
     event_hero_subtitle: 'Stay updated with our upcoming events, academic exhibitions, sports championships, and cultural celebrations.',
@@ -42,7 +43,7 @@ const EventPage = () => {
     setError('');
     try {
       // Fetch events from API
-      const response = await fetch(`${API_BASE_URL}/api/events?limit=50&search=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`${API_BASE_URL}/api/events?limit=50&search=${encodeURIComponent(searchQuery)}&date=${selectedSpecificDate}`);
       if (!response.ok) throw new Error('Failed to fetch events');
       const result = await response.json();
       setEvents(result.data || []);
@@ -69,7 +70,7 @@ const EventPage = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [searchQuery]);
+  }, [searchQuery, selectedSpecificDate]);
 
   useEffect(() => {
     fetchSettings();
@@ -218,6 +219,29 @@ const EventPage = () => {
                 <option value="upcoming">Upcoming Events</option>
                 <option value="past">Past Events</option>
               </select>
+            </div>
+
+            {/* Specific Date Picker */}
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <label className="text-sm font-bold text-gray-600 whitespace-nowrap hidden sm:inline">Specific Date:</label>
+              <div className="relative w-full sm:w-auto flex items-center">
+                <input
+                  type="date"
+                  value={selectedSpecificDate}
+                  onChange={(e) => setSelectedSpecificDate(e.target.value)}
+                  className="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1E3A8A]/20 focus:border-[#1E3A8A] font-semibold text-sm cursor-pointer"
+                />
+                {selectedSpecificDate && (
+                  <button 
+                    onClick={() => setSelectedSpecificDate('')}
+                    className="absolute right-2 text-gray-400 hover:text-red-500 font-extrabold text-lg"
+                    style={{ zIndex: 10 }}
+                    title="Clear Date"
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
             </div>
 
           </div>
