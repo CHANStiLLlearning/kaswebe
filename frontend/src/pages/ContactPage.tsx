@@ -48,44 +48,52 @@ const ContactPage = () => {
 
   const contactItems = [
     {
-      icon: <Phone className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
+      icon: <Phone className="w-6 h-6 text-[#9A2220]" />,
       title: "Phone",
       content: settings.contact_phone,
+      link: `tel:${settings.contact_phone.replace(/[^\d+]/g, '')}`
     },
     {
-      icon: <Mail className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
+      icon: <Mail className="w-6 h-6 text-[#9A2220]" />,
       title: "Mail",
       content: settings.contact_email,
+      link: `mailto:${settings.contact_email}`
     },
     {
-      icon: <FaTelegramPlane className="w-7 h-7 text-[#A02828]" />,
+      icon: <FaTelegramPlane className="w-6 h-6 text-[#9A2220]" />,
       title: "Telegram",
       content: settings.contact_telegram,
+      link: settings.contact_telegram.startsWith('http') ? settings.contact_telegram : `https://${settings.contact_telegram}`
     },
     {
-      icon: <MapPin className="w-7 h-7 text-[#A02828] stroke-[1.5]" />,
+      icon: <MapPin className="w-6 h-6 text-[#9A2220]" />,
       title: "Location",
       content: settings.contact_address,
+      link: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.contact_address)}`
     },
     {
-      icon: <FaLinkedin className="w-7 h-7 text-[#A02828]" />,
-      title: "Linkln",
+      icon: <FaLinkedin className="w-6 h-6 text-[#9A2220]" />,
+      title: "LinkedIn",
       content: settings.contact_linkedin,
+      link: `https://linkedin.com`
     },
     {
-      icon: <FaFacebook className="w-7 h-7 text-[#A02828]" />,
+      icon: <FaFacebook className="w-6 h-6 text-[#9A2220]" />,
       title: "Facebook",
       content: settings.contact_facebook,
+      link: `https://facebook.com`
     },
     {
-      icon: <FaInstagram className="w-7 h-7 text-[#A02828]" />,
+      icon: <FaInstagram className="w-6 h-6 text-[#9A2220]" />,
       title: "Instagram",
       content: settings.contact_instagram,
+      link: `https://instagram.com/${settings.contact_instagram.replace('@', '')}`
     },
     {
-      icon: <FaTiktok className="w-7 h-7 text-[#A02828]" />,
-      title: "Toktok",
+      icon: <FaTiktok className="w-6 h-6 text-[#9A2220]" />,
+      title: "TikTok",
       content: settings.contact_tiktok,
+      link: `https://tiktok.com/@${settings.contact_tiktok.replace('@', '')}`
     }
   ];
 
@@ -173,21 +181,50 @@ const ContactPage = () => {
         </div>
 
         {/* Contact Grid */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Other Ways to Connect</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-          {contactItems.map((item, index) => (
-            <div key={index} className="flex items-start gap-5">
-              <div className="w-16 h-16 shrink-0 bg-[#f9fafb] rounded-2xl flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-50">
-                {item.icon}
-              </div>
-              <div className="flex flex-col pt-1">
-                <h3 className="text-[17px] font-bold text-gray-900 mb-1 leading-tight tracking-wide">{item.title}</h3>
-                <p className="text-[14px] text-gray-500 leading-relaxed font-medium">
+        <h2 className="text-3xl font-extrabold text-gray-900 mb-4 text-center tracking-tight">Other Ways to Connect</h2>
+        <p className="text-gray-500 text-center max-w-xl mx-auto mb-12 text-sm md:text-base font-medium">
+          Choose your preferred channel to reach out. Our team is available to assist you across all platforms.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {contactItems.map((item, index) => {
+            const cardClasses = "bg-white rounded-2xl p-6 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group cursor-pointer hover:border-[#9A2220]/20";
+            
+            const cardContent = (
+              <>
+                <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-[#9A2220]/5 group-hover:border-[#9A2220]/10 transition-colors duration-300 mb-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+                  <div className="group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
+                  </div>
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-2 tracking-wide group-hover:text-[#9A2220] transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-xs text-gray-500 leading-relaxed font-semibold break-all max-w-[200px]">
                   {item.content}
                 </p>
+              </>
+            );
+
+            if (item.link) {
+              return (
+                <a
+                  key={index}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cardClasses}
+                >
+                  {cardContent}
+                </a>
+              );
+            }
+
+            return (
+              <div key={index} className={cardClasses}>
+                {cardContent}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

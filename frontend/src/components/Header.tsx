@@ -70,7 +70,12 @@ const Header = () => {
             >
               Home
             </NavLink>
-
+             <NavLink
+              to="/eventpage"
+              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-[#A32924] text-[#A32924]' : 'border-transparent text-gray-700 hover:text-[#A32924] hover:border-[#A32924]/30'}`}
+            >
+              Events
+            </NavLink>
 
             <NavLink
               to="/news"
@@ -85,12 +90,7 @@ const Header = () => {
             >
               Contact Us
             </NavLink>
-            <NavLink
-              to="/eventpage"
-              className={({ isActive }) => `px-4 py-2 text-[15px] font-semibold transition-all border-b-2 ${isActive ? 'border-[#A32924] text-[#A32924]' : 'border-transparent text-gray-700 hover:text-[#A32924] hover:border-[#A32924]/30'}`}
-            >
-              Events
-            </NavLink>
+           {/* [] */}
              <div className="relative group flex items-center py-2">
               <NavLink
                 to="/about"
