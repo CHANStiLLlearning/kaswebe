@@ -39,19 +39,23 @@ const Footer = () => {
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
           
           {/* Contact Us */}
           <div>
             <h3 className="text-xl font-bold mb-6 pb-2 border-b border-white/20 inline-block">CONTACT US</h3>
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-3">
               <li><NavLink to="/contact" className="hover:text-[#EBA525] transition-colors">Contact to America School</NavLink></li>
               <li><NavLink to="/contact" className="hover:text-[#EBA525] transition-colors">Location &amp; Maps</NavLink></li>
               <li><NavLink to="/events" className="hover:text-[#EBA525] transition-colors">Events</NavLink></li>
               <li><a href="#" className="hover:text-[#EBA525] transition-colors">E-Class</a></li>
             </ul>
-            
-            <p className="mb-4 text-white/90">Follow us on social media to receive important updates:</p>
+          </div>
+
+          {/* Follow Us */}
+          <div>
+            <h3 className="text-xl font-bold mb-6 pb-2 border-b border-white/20 inline-block">FOLLOW US</h3>
+            <p className="mb-6 text-white/90 leading-relaxed">Follow us on social media to receive important updates:</p>
             <div className="flex gap-4">
               <a
                 href={socials.contact_instagram !== '#' ? `https://instagram.com/${socials.contact_instagram.replace(/^@/, '')}` : '#'}
