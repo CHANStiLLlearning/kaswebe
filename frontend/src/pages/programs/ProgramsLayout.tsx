@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { settingsService } from '../../services/settingsService';
+import { programService } from '../../services/programService';
 
 const ProgramsLayout = () => {
   const location = useLocation();
@@ -8,11 +9,14 @@ const ProgramsLayout = () => {
   // Format the current path for the breadcrumb
   const pathParts = location.pathname.split('/').filter(Boolean);
   const isIndex = pathParts.length === 1;
+  const programId = !isIndex ? parseInt(pathParts[1]) : null;
 
   const [settings, setSettings] = useState({
     program_hero_title: 'Academic Programs',
     program_hero_image: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=1920',
   });
+
+  const [programTitle, setProgramTitle] = useState('');
 
   useEffect(() => {
     settingsService.get()
@@ -24,6 +28,18 @@ const ProgramsLayout = () => {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (programId && !isNaN(programId)) {
+      programService.getById(programId)
+        .then(program => {
+          setProgramTitle(program.title);
+        })
+        .catch(() => setProgramTitle('Program Details'));
+    } else {
+      setProgramTitle('');
+    }
+  }, [programId]);
 
   return (
     <div className="w-full bg-white flex flex-col min-h-screen">
@@ -49,7 +65,7 @@ const ProgramsLayout = () => {
               <>
                 <span>/</span>
                 <span className="text-[#EBA525] capitalize">
-                  {pathParts[1].replace('-', ' ')}
+                  {programTitle || 'Loading...'}
                 </span>
               </>
             )}

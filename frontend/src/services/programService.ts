@@ -8,6 +8,10 @@ export const programService = {
     return api.get<Program[]>('/api/programs');
   },
 
+  getById(id: number): Promise<Program> {
+    return api.get<Program>(`/api/programs/${id}`);
+  },
+
   create(data: ProgramInput): Promise<Program> {
     return api.post<Program>('/api/programs', data);
   },

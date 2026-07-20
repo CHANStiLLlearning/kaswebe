@@ -339,11 +339,23 @@ app.get('/api/programs', async (req, res) => {
   }
 });
 
+app.get('/api/programs/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: 'Invalid program id' });
+    const program = await prisma.program.findUnique({ where: { id } });
+    if (!program) return res.status(404).json({ error: 'Program not found' });
+    res.json(program);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch program" });
+  }
+});
+
 app.post('/api/programs', async (req, res) => {
   try {
-    const { title, description, path, iconName, colorClass } = req.body;
+    const { title, description, path, iconName, colorClass, ageRange, gradeLevel, image } = req.body;
     const program = await prisma.program.create({
-      data: { title, description, path, iconName, colorClass }
+      data: { title, description, path, iconName, colorClass, ageRange, gradeLevel, image }
     });
     res.status(201).json(program);
   } catch (error) {
@@ -354,10 +366,10 @@ app.post('/api/programs', async (req, res) => {
 app.put('/api/programs/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { title, description, path, iconName, colorClass } = req.body;
+    const { title, description, path, iconName, colorClass, ageRange, gradeLevel, image } = req.body;
     const program = await prisma.program.update({
       where: { id },
-      data: { title, description, path, iconName, colorClass }
+      data: { title, description, path, iconName, colorClass, ageRange, gradeLevel, image }
     });
     res.json(program);
   } catch (error) {
@@ -374,6 +386,7 @@ app.delete('/api/programs/:id', async (req, res) => {
     res.status(500).json({ error: "Failed to delete program" });
   }
 });
+
 
 // --- Teachers / Faculty API ---
 app.get('/api/teachers', async (req, res) => {

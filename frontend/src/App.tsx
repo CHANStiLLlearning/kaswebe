@@ -9,10 +9,7 @@ import CoreValuesPage from './pages/CoreValuesPage'
 
 import ProgramsLayout from './pages/programs/ProgramsLayout'
 import ProgramsIndex from './pages/programs/ProgramsIndex'
-import KhmerGeneralEducation from './pages/programs/KhmerGeneralEducation'
-import IntegratedEnglish from './pages/programs/IntegratedEnglish'
-import GeneralEnglish from './pages/programs/GeneralEnglish'
-import ChineseLanguage from './pages/programs/ChineseLanguage'
+import ProgramDetail from './pages/programs/ProgramDetail'
 import NewsPage from './pages/NewsPage'
 import NewsDetailPage from './pages/NewsDetailPage'
 import ContactPage from './pages/ContactPage'
@@ -89,10 +86,7 @@ function App() {
 
                   <Route path="/programs" element={<ProgramsLayout />}>
                     <Route index element={<ProgramsIndex />} />
-                    <Route path="kge" element={<KhmerGeneralEducation />} />
-                    <Route path="iep" element={<IntegratedEnglish />} />
-                    <Route path="gep" element={<GeneralEnglish />} />
-                    <Route path="chinese" element={<ChineseLanguage />} />
+                    <Route path=":id" element={<ProgramDetail />} />
                   </Route>
                   <Route path="/news" element={<NewsPage />} />
                   <Route path="/news/:id" element={<NewsDetailPage />} />

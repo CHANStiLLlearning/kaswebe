@@ -60,7 +60,7 @@ const ProgramsIndex = () => {
               return (
                 <Link 
                   key={program.id} 
-                  to={program.path || '#'}
+                  to={`/programs/${program.id}`}
                   className="bg-white rounded-3xl overflow-hidden flex flex-col shadow-sm border border-gray-150/60 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group relative font-sans"
                 >
                   {/* Card Image Banner */}
