@@ -64,8 +64,12 @@ const ProgramsLayout = () => {
             {!isIndex && (
               <>
                 <span>/</span>
-                <span className="text-[#EBA525] capitalize">
-                  {programTitle || 'Loading...'}
+                <span className="text-[#EBA525] flex items-center h-full">
+                  {programTitle ? (
+                    <span className="capitalize">{programTitle}</span>
+                  ) : (
+                    <span className="inline-block w-32 h-5 bg-white/20 rounded animate-pulse" />
+                  )}
                 </span>
               </>
             )}

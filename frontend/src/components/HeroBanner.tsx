@@ -46,8 +46,35 @@ const HeroBanner = () => {
 
   if (loading) {
     return (
-      <div className="relative w-full h-[75vh] min-h-[500px] bg-black flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-[#EBA525] border-t-transparent rounded-full animate-spin"></div>
+      <div className="relative w-full h-[75vh] min-h-[500px] bg-gray-900 overflow-hidden flex items-center select-none font-sans">
+        {/* Animated background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 animate-[pulse_2s_ease-in-out_infinite] opacity-50 z-0"></div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl space-y-6">
+            {/* Highlight Tag Skeleton */}
+            <div className="w-28 sm:w-32 h-8 bg-white/10 rounded-full animate-pulse"></div>
+
+            {/* Slide Title Skeleton */}
+            <div className="space-y-3">
+              <div className="w-full sm:w-3/4 h-10 sm:h-14 md:h-16 bg-white/10 rounded-xl animate-pulse"></div>
+              <div className="w-3/4 sm:w-1/2 h-10 sm:h-14 md:h-16 bg-white/10 rounded-xl animate-pulse"></div>
+            </div>
+
+            {/* Slide Description Skeleton */}
+            <div className="space-y-3 pt-2">
+              <div className="w-full h-4 sm:h-5 bg-white/10 rounded-md animate-pulse"></div>
+              <div className="w-5/6 h-4 sm:h-5 bg-white/10 rounded-md animate-pulse"></div>
+              <div className="w-4/6 h-4 sm:h-5 bg-white/10 rounded-md animate-pulse"></div>
+            </div>
+
+            {/* Action Buttons Skeleton */}
+            <div className="flex flex-wrap gap-4 pt-4">
+              <div className="w-36 sm:w-44 h-12 sm:h-14 bg-white/10 rounded-xl animate-pulse delay-75"></div>
+              <div className="w-36 sm:w-44 h-12 sm:h-14 bg-white/10 rounded-xl animate-pulse delay-150"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

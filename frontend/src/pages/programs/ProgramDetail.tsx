@@ -54,9 +54,38 @@ const ProgramDetail = () => {
   // ─── Loading state ──────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="py-24 flex flex-col items-center justify-center gap-4 text-gray-400">
-        <Loader2 className="w-10 h-10 animate-spin text-[#1E3A8A]" />
-        <p className="text-sm font-medium">Loading program details…</p>
+      <div className="bg-white min-h-screen">
+        {/* Banner Skeleton */}
+        <div className="w-full h-64 md:h-80 bg-gray-100 animate-pulse flex items-end p-6">
+          <div className="w-1/3 h-10 bg-gray-200 rounded-xl animate-pulse ml-4 mb-4" />
+        </div>
+        
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Back link skeleton */}
+          <div className="w-32 h-4 bg-gray-100 rounded animate-pulse mb-8" />
+          
+          {/* Badges skeleton */}
+          <div className="flex flex-wrap gap-3 mb-8">
+            <div className="w-28 h-8 bg-gray-100 rounded-full animate-pulse" />
+            <div className="w-40 h-8 bg-gray-100 rounded-full animate-pulse" />
+            <div className="w-36 h-8 bg-gray-100 rounded-full animate-pulse" />
+          </div>
+          
+          {/* Divider */}
+          <div className="w-16 h-1 rounded-full bg-gray-100 mb-8 animate-pulse" />
+          
+          {/* Content skeleton */}
+          <div className="space-y-4 mb-12">
+            <div className="w-full h-5 bg-gray-100 rounded animate-pulse" />
+            <div className="w-11/12 h-5 bg-gray-100 rounded animate-pulse" />
+            <div className="w-10/12 h-5 bg-gray-100 rounded animate-pulse" />
+            <div className="w-full h-5 bg-gray-100 rounded animate-pulse mt-4" />
+            <div className="w-8/12 h-5 bg-gray-100 rounded animate-pulse" />
+          </div>
+
+          {/* CTA Skeleton */}
+          <div className="w-full h-24 bg-gray-50 rounded-2xl animate-pulse border border-gray-100" />
+        </div>
       </div>
     );
   }
