@@ -1,38 +1,12 @@
 import { api } from './api';
+import type { SchoolEvent, EventInput, EventParams } from '../types';
+import { buildQueryString } from '../utils';
 
-export type SchoolEvent = {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  date: string;
-  image?: string;
-  status?: string;
-  badge?: string;
-  createdAt: string;
-};
-
-export type EventInput = Omit<SchoolEvent, 'id' | 'createdAt'>;
-
-export type EventParams = {
-  search?: string;
-  date?: string;
-  limit?: number;
-};
-
-function buildQuery(params?: EventParams): string {
-  if (!params) return '';
-  const q = new URLSearchParams();
-  if (params.search) q.set('search', params.search);
-  if (params.date) q.set('date', params.date);
-  if (params.limit !== undefined) q.set('limit', String(params.limit));
-  const str = q.toString();
-  return str ? `?${str}` : '';
-}
+export type { SchoolEvent, EventInput, EventParams };
 
 export const eventService = {
   getAll(params?: EventParams): Promise<SchoolEvent[]> {
-    return api.get<SchoolEvent[]>(`/api/events${buildQuery(params)}`);
+    return api.get<SchoolEvent[]>(`/api/events${buildQueryString(params)}`);
   },
 
   create(data: EventInput): Promise<SchoolEvent> {

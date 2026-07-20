@@ -1,6 +1,7 @@
 import { api } from './api';
+import type { Settings } from '../types';
 
-export type Settings = Record<string, string>;
+export type { Settings };
 
 export const settingsService = {
   get(): Promise<Settings> {

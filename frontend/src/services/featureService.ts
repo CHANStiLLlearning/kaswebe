@@ -1,14 +1,7 @@
 import { api } from './api';
+import type { Feature, FeatureInput } from '../types';
 
-export type Feature = {
-  id: number;
-  title: string;
-  description: string;
-  iconName?: string;
-  colorClass?: string;
-};
-
-export type FeatureInput = Omit<Feature, 'id'>;
+export type { Feature, FeatureInput };
 
 export const featureService = {
   getAll(): Promise<Feature[]> {

@@ -1,10 +1,7 @@
 import { api } from './api';
+import type { Subscriber } from '../types';
 
-export type Subscriber = {
-  id: number;
-  email: string;
-  createdAt: string;
-};
+export type { Subscriber };
 
 export const subscriberService = {
   getAll(): Promise<Subscriber[]> {

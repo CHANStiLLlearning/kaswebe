@@ -1,18 +1,7 @@
 import { api } from './api';
+import type { Program, ProgramInput } from '../types';
 
-export type Program = {
-  id: number;
-  title: string;
-  description: string;
-  path: string;
-  iconName: string;
-  colorClass: string;
-  ageRange?: string;
-  gradeLevel?: string;
-  image?: string;
-};
-
-export type ProgramInput = Omit<Program, 'id'>;
+export type { Program, ProgramInput };
 
 export const programService = {
   getAll(): Promise<Program[]> {

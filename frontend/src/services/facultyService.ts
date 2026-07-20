@@ -1,25 +1,14 @@
 import { api } from './api';
+import type { FacultyMember, FacultyInput, FacultyParams } from '../types';
+import { buildQueryString } from '../utils';
 
-export type FacultyMember = {
-  id: number;
-  name: string;
-  title?: string;
-  subject?: string;
-  image?: string;
-  createdAt?: string;
-};
-
-export type FacultyInput = Omit<FacultyMember, 'id' | 'createdAt'>;
-
-export type FacultyParams = {
-  limit?: number;
-};
+export type { FacultyMember, FacultyInput, FacultyParams };
 
 export const facultyService = {
   getAll(params?: FacultyParams): Promise<FacultyMember[]> {
-    const q = params?.limit !== undefined ? `?limit=${params.limit}` : '';
-    return api.get<FacultyMember[]>(`/api/teachers${q}`);
+    return api.get<FacultyMember[]>(`/api/teachers${buildQueryString(params)}`);
   },
+
 
   create(data: FacultyInput): Promise<FacultyMember> {
     return api.post<FacultyMember>('/api/teachers', data);

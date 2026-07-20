@@ -1,20 +1,7 @@
 import { api } from './api';
+import type { ContactMessage, ContactInput } from '../types';
 
-export type ContactMessage = {
-  id: number;
-  name: string;
-  email: string;
-  subject?: string;
-  message: string;
-  createdAt: string;
-};
-
-export type ContactInput = {
-  name: string;
-  email: string;
-  subject?: string;
-  message: string;
-};
+export type { ContactMessage, ContactInput };
 
 export const contactService = {
   getAll(): Promise<ContactMessage[]> {

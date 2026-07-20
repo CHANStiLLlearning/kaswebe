@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { eventService } from '../services/eventService';
 import { settingsService } from '../services/settingsService';
 import { useSEO } from '../hooks/useSEO';
+import { stripStyles } from '../utils';
 
 type SchoolEvent = {
   id: number;
@@ -15,16 +16,6 @@ type SchoolEvent = {
   status?: string;
   badge?: string;
 };
-
-// Strip inline style attributes from HTML to avoid editor color overrides
-const stripStyles = (html: string) =>
-  (html || '')
-    .replace(/ style="[^"]*"/gi, '')
-    .replace(/<span\b[^>]*>([^<]*)<\/span>/gi, '$1')
-    .replace(/&amp;nbsp;/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&nbsp/g, ' ')
-    .replace(/\u00A0/g, ' ');
 
 const EventPage = () => {
   useSEO('events');

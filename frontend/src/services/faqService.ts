@@ -1,13 +1,7 @@
 import { api } from './api';
+import type { FAQ, FAQInput } from '../types';
 
-export type FAQ = {
-  id: number;
-  question: string;
-  answer_kh: string;
-  answer_en: string;
-};
-
-export type FAQInput = Omit<FAQ, 'id'>;
+export type { FAQ, FAQInput };
 
 export const faqService = {
   getAll(): Promise<FAQ[]> {

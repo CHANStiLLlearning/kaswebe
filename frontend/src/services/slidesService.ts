@@ -1,19 +1,7 @@
 import { api } from './api';
+import type { Slide, SlideInput } from '../types';
 
-export type Slide = {
-  id: number;
-  image: string;
-  tag: string;
-  title: string;
-  description: string;
-  iconName: string;
-  primaryBtnText: string;
-  primaryBtnLink: string;
-  secondaryBtnText: string;
-  secondaryBtnLink: string;
-};
-
-export type SlideInput = Omit<Slide, 'id'>;
+export type { Slide, SlideInput };
 
 export const slidesService = {
   getAll(): Promise<Slide[]> {

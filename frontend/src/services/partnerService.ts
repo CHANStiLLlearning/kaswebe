@@ -1,12 +1,7 @@
 import { api } from './api';
+import type { Partner, PartnerInput } from '../types';
 
-export type Partner = {
-  id: number;
-  name: string;
-  logo: string;
-};
-
-export type PartnerInput = Omit<Partner, 'id'>;
+export type { Partner, PartnerInput };
 
 export const partnerService = {
   getAll(): Promise<Partner[]> {
