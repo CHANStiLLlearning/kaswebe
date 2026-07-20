@@ -8,6 +8,10 @@ const AboutPage = () => {
   const [settings, setSettings] = useState({
     about_hero_title: 'About Us',
     about_hero_image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1920',
+    about_mission_title: 'Our Mission',
+    about_mission_desc: 'To provide our students with the highest quality of education, combining international academic standards with rich Cambodian cultural values. We aim to nurture young minds to become innovative thinkers and responsible global citizens.',
+    about_vision_title: 'Our Vision',
+    about_vision_desc: 'To be the leading educational institution in Cambodia that is recognized internationally for academic excellence, character development, and equipping students with the essential skills to thrive in the 21st century.',
   });
 
   useEffect(() => {
@@ -21,6 +25,10 @@ const AboutPage = () => {
           ...prev,
           about_hero_title: data.about_hero_title || prev.about_hero_title,
           about_hero_image: data.about_hero_image || prev.about_hero_image,
+          about_mission_title: data.about_mission_title || prev.about_mission_title,
+          about_mission_desc: data.about_mission_desc || prev.about_mission_desc,
+          about_vision_title: data.about_vision_title || prev.about_vision_title,
+          about_vision_desc: data.about_vision_desc || prev.about_vision_desc,
         }));
       })
       .catch(err => {
@@ -50,7 +58,12 @@ const AboutPage = () => {
       </section>
 
       {/* Main Content Sections */}
-      <MissionVision />
+      <MissionVision 
+        missionTitle={settings.about_mission_title}
+        missionDesc={settings.about_mission_desc}
+        visionTitle={settings.about_vision_title}
+        visionDesc={settings.about_vision_desc}
+      />
       <KeyFeatures />
       <FAQ />
     </div>
