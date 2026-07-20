@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import {
   ChevronLeft, BookOpen, Globe, Languages, MessageSquare,
-  Clock, GraduationCap, Users, AlertCircle, Loader2
+  Clock, GraduationCap, Users, AlertCircle
 } from 'lucide-react';
 import { programService } from '../../services/programService';
 import type { Program } from '../../types';
